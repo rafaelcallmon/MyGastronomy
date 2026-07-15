@@ -1,0 +1,157 @@
+[
+    {
+        "name": "Squid Stew With Peas",
+        "price": "10.99",
+        "available": false,
+        "description": "Fresh squid slowly cooked in a stew with fresh peas",
+        "ingredients": [
+            "Fresh squid",
+            "Fresh peas",
+            "Tomatoes"
+        ],
+        "category": "First"
+    },
+    {
+        "name": "Grilled Salmon",
+        "price": "18.50",
+        "available": true,
+        "description": "Grilled salmon served with steamed vegetables",
+        "ingredients": [
+            "Salmon",
+            "Broccoli",
+            "Carrots",
+            "Olive oil"
+        ],
+        "category": "Main"
+    },
+    {
+        "name": "Margherita Pizza",
+        "price": "14.99",
+        "available": true,
+        "description": "Classic Italian pizza with mozzarella, tomato and basil",
+        "ingredients": [
+            "Pizza dough",
+            "Mozzarella",
+            "Tomato sauce",
+            "Fresh basil"
+        ],
+        "category": "Main"
+    },
+    {
+        "name": "Caesar Salad",
+        "price": "9.50",
+        "available": true,
+        "description": "Fresh romaine lettuce with Caesar dressing and croutons",
+        "ingredients": [
+            "Romaine lettuce",
+            "Parmesan cheese",
+            "Croutons",
+            "Caesar dressing"
+        ],
+        "category": "Starter"
+    },
+    {
+        "name": "Beef Lasagna",
+        "price": "16.75",
+        "available": true,
+        "description": "Homemade lasagna layered with beef and cheese",
+        "ingredients": [
+            "Ground beef",
+            "Lasagna pasta",
+            "Mozzarella",
+            "Tomato sauce"
+        ],
+        "category": "Main"
+    },
+    {
+        "name": "Chicken Alfredo",
+        "price": "15.25",
+        "available": true,
+        "description": "Creamy Alfredo pasta topped with grilled chicken",
+        "ingredients": [
+            "Fettuccine",
+            "Chicken breast",
+            "Parmesan cheese",
+            "Heavy cream"
+        ],
+        "category": "Main"
+    },
+    {
+        "name": "Mushroom Risotto",
+        "price": "13.90",
+        "available": false,
+        "description": "Creamy risotto made with fresh mushrooms",
+        "ingredients": [
+            "Arborio rice",
+            "Mushrooms",
+            "Parmesan cheese",
+            "Vegetable broth"
+        ],
+        "category": "Main"
+    },
+    {
+        "name": "Tomato Soup",
+        "price": "7.99",
+        "available": true,
+        "description": "Creamy tomato soup served with toasted bread",
+        "ingredients": [
+            "Tomatoes",
+            "Cream",
+            "Garlic",
+            "Basil"
+        ],
+        "category": "Starter"
+    },
+    {
+        "name": "Chocolate Lava Cake",
+        "price": "6.50",
+        "available": true,
+        "description": "Warm chocolate cake with a melted chocolate center",
+        "ingredients": [
+            "Dark chocolate",
+            "Butter",
+            "Eggs",
+            "Flour"
+        ],
+        "category": "Dessert"
+    },
+    {
+        "name": "Cheesecake",
+        "price": "6.99",
+        "available": true,
+        "description": "Creamy cheesecake with strawberry topping",
+        "ingredients": [
+            "Cream cheese",
+            "Sugar",
+            "Eggs",
+            "Strawberry syrup"
+        ],
+        "category": "Dessert"
+    },
+    {
+        "name": "Garlic Bread",
+        "price": "5.50",
+        "available": true,
+        "description": "Toasted bread with garlic butter and herbs",
+        "ingredients": [
+            "French bread",
+            "Butter",
+            "Garlic",
+            "Parsley"
+        ],
+        "category": "Starter"
+    },
+    {
+        "name": "Shrimp Tacos",
+        "price": "12.80",
+        "available": true,
+        "description": "Soft tacos filled with grilled shrimp and fresh vegetables",
+        "ingredients": [
+            "Shrimp",
+            "Tortillas",
+            "Cabbage",
+            "Lime"
+        ],
+        "category": "Main"
+    }
+]
