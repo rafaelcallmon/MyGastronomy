@@ -1,10 +1,10 @@
-
+import Navbar from "./components/navbar/navbar.jsx"
 
 export default function App() {
 
   return (
     <>
-      <h1>MyGastronomy</h1>
+      <Navbar/>
     </>
   )
 }
