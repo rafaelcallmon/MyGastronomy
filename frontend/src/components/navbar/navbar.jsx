@@ -2,7 +2,7 @@ import styles from './navbar.module.css'
 import { LuShoppingCart, LuUser, LuMenu } from "react-icons/lu";
 import { Drawer } from '@mui/material'
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     const [openMenu, setOpenMenu] = useState(false)
@@ -14,12 +14,18 @@ export default function Navbar() {
     return (
         <nav className={styles.navbarContainer}>
             <div className={styles.navbarItems}>
-                <img src="/logo.png" alt="" className={styles.logo}/>
+                <Link to={'/'}>
+                    <img src="/logo.png" alt="" className={styles.logo}/>
+                </Link>
                 <div className={styles.navbarLinksContainer}>
-                    <a href="" className={styles.navbarLink}>Home</a>
-                    <a href="" className={styles.navbarLink}>Plates</a>
-                    <LuShoppingCart className={styles.navbarLink}/>
-                    <LuUser className={styles.navbarLink}/>
+                    <Link to={'/'} className={styles.navbarLink}>Home</Link>
+                    <Link to={'/plates'} className={styles.navbarLink}>Plates</Link>
+                    <Link to={'/cart'}>
+                        <LuShoppingCart className={styles.navbarLink}/>
+                    </Link>
+                    <Link to={'/profile'}>
+                        <LuUser className={styles.navbarLink}/>
+                    </Link>
                 </div>
             </div>
 
@@ -38,9 +44,9 @@ export default function Navbar() {
                 >
 
                 <div className={styles.drawer}>
-                    <a href="" className={styles.navbarLink}>Home</a>
-                    <a href="" className={styles.navbarLink}>Plates</a>
-                    <a href="" className={styles.navbarLink}>Profile</a>
+                    <Link to={'/'} className={styles.navbarLink}>Home</Link>
+                    <Link to={'/plates'} className={styles.navbarLink}>Plates</Link>
+                    <Link to={'/profile'} className={styles.navbarLink}>Profile</Link>
                 </div>
 
             </Drawer>

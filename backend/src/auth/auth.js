@@ -98,6 +98,7 @@ authRouter.post('/signup', async (req, res) => {
 })
 
 authRouter.post('/login', async (req, res) => {
+
     passport.authenticate('local', (error, user) => {
         if (error) {
             return res.status(500).send({
