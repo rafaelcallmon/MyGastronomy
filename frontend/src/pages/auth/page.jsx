@@ -2,11 +2,17 @@ import { useEffect, useState } from "react"
 import { TextField, Button } from "@mui/material"
 import styles from "./page.module.css"
 import authServices from "../../services/auth.jsx"
+import { Navigate } from 'react-router-dom'
 
 export default function Auth() {
     const [formType, setFormType] = useState('login')
     const [formData, setFormData] = useState(null)
     const { login, signup, authLoading } = authServices()
+    const authData = JSON.parse(localStorage.getItem('auth'))
+
+    if (authData) {
+        return <Navigate to="/profile" replace></Navigate>
+    }
 
     const handleChangeFormType = () => {
         setFormData(null)
@@ -50,76 +56,76 @@ export default function Auth() {
         )
     }
 
-    if (formType === 'login') {
-        return (
-            <div className={styles.authPageContainer}>
-                <h1>Login</h1>
-                <button onClick={handleChangeFormType}>Don't you have an account? Click here</button>
-                <form onSubmit={handleSubmitForm}>
-                    <TextField
-                    required
-                    label='Email'
-                    type="email"
-                    name="email"
-                    onChange={handleFormDataChange}
-                    />
+    return (
+        <div className={styles.authPageContainer}>
+                {formType === 'login' ? (
+                    <>
+                        <h1>Login</h1>
+                        <button onClick={handleChangeFormType}>Don't you have an account? Click here</button>
+                        <form onSubmit={handleSubmitForm}>
+                            <TextField
+                            required
+                            label='Email'
+                            type="email"
+                            name="email"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <TextField
-                    required
-                    label='Password'
-                    type="password"
-                    name="password"
-                    onChange={handleFormDataChange}
-                    />
+                            <TextField
+                            required
+                            label='Password'
+                            type="password"
+                            name="password"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <Button type="submit">Login</Button>
-                </form>
-            </div>
-        )
-    }
+                            <Button type="submit">Login</Button>
+                        </form>
+                    </>
+                ) : null}
 
-    if (formType === 'signup') {
-        return (
-            <div className={styles.authPageContainer}>
-                <h1>Signup</h1>
-                <button onClick={handleChangeFormType}>Already have an account? Click here</button>
+                {formType === 'signup' ? (
+                    <>
+                        <h1>Signup</h1>
+                        <button onClick={handleChangeFormType}>Already have an account? Click here</button>
 
-                <form onSubmit={handleSubmitForm}>
-                    <TextField
-                    required
-                    label='Fullname'
-                    type="fullname"
-                    name="fullname"
-                    onChange={handleFormDataChange}
-                    />
+                        <form onSubmit={handleSubmitForm}>
+                            <TextField
+                            required
+                            label='Fullname'
+                            type="fullname"
+                            name="fullname"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <TextField
-                    required
-                    label='Email'
-                    type="email"
-                    name="email"
-                    onChange={handleFormDataChange}
-                    />
+                            <TextField
+                            required
+                            label='Email'
+                            type="email"
+                            name="email"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <TextField
-                    required
-                    label='Password'
-                    type="password"
-                    name="password"
-                    onChange={handleFormDataChange}
-                    />
+                            <TextField
+                            required
+                            label='Password'
+                            type="password"
+                            name="password"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <TextField
-                    required
-                    label='Confirm password'
-                    type="password"
-                    name="confirmPassword"
-                    onChange={handleFormDataChange}
-                    />
+                            <TextField
+                            required
+                            label='Confirm password'
+                            type="password"
+                            name="confirmPassword"
+                            onChange={handleFormDataChange}
+                            />
 
-                    <Button type="submit">Signup</Button>
-                </form>
-            </div>
-        )
-    }
+                            <Button type="submit">Signup</Button>
+                        </form>
+                    </>
+                ): null}
+        </div>
+    )
 }

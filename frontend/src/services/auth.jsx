@@ -7,7 +7,6 @@ export default function authServices () {
 
     const login = (formData) => {
         setAuthLoading(true)
-        console.log(JSON.stringify(formData));
 
         fetch(`${url}/login`, {
             method: 'POST',
@@ -45,7 +44,7 @@ export default function authServices () {
     }
 
     const logout = () => {
-        
+        localStorage.removeItem('auth')
     }
 
     const signup = (formData) => {
