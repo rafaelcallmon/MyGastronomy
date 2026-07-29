@@ -45,7 +45,7 @@ export default class OrdersDataAccess {
                 $group: {
                     _id: '$_id',
                     pickUpStatus: { $first: '$pickUpStatus'},
-                    pickupTime: { $first: '$pickUpTime'},
+                    pickupTime: { $first: '$pickupTime'},
                     userDetails: { $first: '$userDetails'},
                     orderItems: { $push: '$orderItems'}
                 }
@@ -100,7 +100,7 @@ export default class OrdersDataAccess {
                 $group: {
                     _id: '$_id',
                     pickUpStatus: { $first: '$pickUpStatus'},
-                    pickupTime: { $first: '$pickUpTime'},
+                    pickupTime: { $first: '$pickupTime'},
                     userDetails: { $first: '$userDetails'},
                     orderItems: { $push: '$orderItems'}
                 }
