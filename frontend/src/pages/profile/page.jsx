@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import authServices from "../../services/auth.jsx"
 import orderServices from "../../services/order.jsx"
 import styles from "./page.module.css"
+import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu";
 
 export default function Profile() {
     const navigate = useNavigate()
@@ -40,13 +41,15 @@ export default function Profile() {
                 <h3>{authData?.user?.email}</h3>
             </div>
 
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout}>Logout <LuLogOut /></button>
             
             {ordersList.length > 0 ?
                 <div className={styles.ordersContainer}>
                     {ordersList.map((order) => (
                         <div key={order._id} className={styles.orderCard}>
-                            <p>{order.pickUpStatus}</p>
+                            {order.pickUpStatus === 'Pending' ? <p className={`${styles.pickUpStatus} ${styles.pending}`}> <LuTimer /> {order.pickUpStatus} </p> : null}
+                            {order.pickUpStatus === 'Completed' ? <p className={`${styles.pickUpStatus} ${styles.completed}`}> <LuCircleCheck /> {order.pickUpStatus} </p> : null}
+                            {order.pickUpStatus === 'Canceled' ? <p className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</p> : null}
                             <h3>{order.pickupTime}</h3>
                             {order.orderItems.map((item) => (
                                 <div key={item._id}>
