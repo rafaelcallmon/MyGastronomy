@@ -1,0 +1,56 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+.foodSection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    background-color: #004643;
+    color: #faf0ca;
+    padding: 1em;
+    border-radius: 15px;
+}
+
+.foodSection div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    text-align: center;
+}
+
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: center;
+}
+
+.socialButtonsContainer {
+    display: flex;
+    gap: 25px;
+}
+
+@media screen and (max-width: 800px) {
+    .foodSection {
+            grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .foodSection {
+            grid-template-columns: repeat(1, 1fr);
+    }
+
+    .socialButtonsContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
