@@ -15,6 +15,16 @@
     gap: 0.5em;
 }
 
+.noOrderCard {
+    background-color: #004643;
+    color: #faf0ca;
+    padding: 1em;
+    border-radius: 15px;
+    width: fit-content;
+    margin: auto;
+}
+
+
 .ordersContainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -46,9 +56,3 @@
     background-color: rgb(155, 57, 57);
 }
 
-p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.2em;
-}
