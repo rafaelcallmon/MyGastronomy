@@ -9,7 +9,7 @@ export default function Navbar() {
 
     const handleOpenMenu = () => {
         setOpenMenu(!openMenu)
-    }
+    }    
 
     return (
         <nav className={styles.navbarContainer}>

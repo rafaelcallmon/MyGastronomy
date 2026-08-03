@@ -5,7 +5,7 @@ import orderServices from "../../services/order.jsx"
 import styles from "./page.module.css"
 import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu";
 
-export default function Profile() {
+export default function Profile() {    
     const navigate = useNavigate()
     const { logout } = authServices()
     const { getUserOrders, orderLoading, refetchOrders, ordersList } = orderServices()
@@ -22,7 +22,7 @@ export default function Profile() {
         }
     }, [refetchOrders]);
 
-    if (orderLoading) {
+    if (!ordersList) {
         return ( <h1>Loading...</h1> )
     }
 
@@ -32,7 +32,7 @@ export default function Profile() {
         navigate("/")
     }
 
-    console.log(ordersList);
+
 
     return (
         <div className={styles.pageContainer}>
@@ -52,7 +52,7 @@ export default function Profile() {
                             {order.pickUpStatus === 'Canceled' ? <p className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</p> : null}
                             <h3>{order.pickupTime}</h3>
                             {order.orderItems.map((item) => (
-                                <div key={item._id}>
+                                <div key={item._id} className={styles.orderCardItem}>
                                     <h4>{item.itemDetails[0].name}</h4>
                                     <p>Quantity: {item.quantity}</p>
                                 </div>
@@ -63,7 +63,7 @@ export default function Profile() {
 
             :
 
-                <div>
+                <div className={styles.noOrderCard}>
                     You do not have orders yet
                 </div>
             }

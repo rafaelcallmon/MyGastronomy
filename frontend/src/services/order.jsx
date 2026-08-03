@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 export default function orderServices() {
-    const [ orderLoading, setOrderLoading ] = useState(false)
+    const [ orderLoading, setOrderLoading ] = useState(true)
     const [ refetchOrders, setRefetchOrders ] = useState(true)
-    const [ ordersList, setOrdersList ] = useState([])
+    const [ ordersList, setOrdersList ] = useState(null)
     
     const url = 'http://localhost:3000/orders'
 
