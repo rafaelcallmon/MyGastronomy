@@ -18,7 +18,7 @@ platesRouter.get('/availables', async (req, res) => {
 })
 
 platesRouter.post('/', async (req, res) => {
-    const { success, statusCode, body } = await platesControllers.addPlate(req.body)
+    const { success, statusCode, body } = await platesControllers.addMultiplePlates(req.body)
 
     res.status(statusCode).send({ success, statusCode, body})
 })

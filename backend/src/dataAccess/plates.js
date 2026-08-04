@@ -28,7 +28,13 @@ export default class PlatesDataAccess {
         .insertOne(plateData)
 
         return result
-    } 
+    }
+
+    async addMultiplePlates(plateDataList) {
+        plateDataList.forEach(plateData => {
+            this.addPlate(plateData)
+        });
+    }
 
     async deletePlate(plateId) {
         const result = await Mongo.db

@@ -1,157 +1,119 @@
 [
     {
-        "name": "Squid Stew With Peas",
-        "price": "10.99",
-        "available": false,
-        "description": "Fresh squid slowly cooked in a stew with fresh peas",
+        "name": "Bread Basket",
+        "price": "5.50",
+        "available": true,
+        "description": "Selection of freshly baked artisan bread served with butter and olive oil.",
         "ingredients": [
-            "Fresh squid",
-            "Fresh peas",
-            "Tomatoes"
+            "Artisan bread",
+            "Butter",
+            "Extra virgin olive oil"
         ],
-        "category": "First"
+        "category": "Appetizer",
+        "imgUrl":"/imgs/plates/bread.png"
+    },
+    {
+        "name": "Classic Lasagna",
+        "price": "16.90",
+        "available": true,
+        "description": "Traditional Italian lasagna layered with meat sauce, béchamel sauce and mozzarella cheese.",
+        "ingredients": [
+            "Lasagna pasta",
+            "Ground beef",
+            "Tomato sauce",
+            "Béchamel sauce",
+            "Mozzarella cheese"
+        ],
+        "category": "First",
+        "imgUrl":"imgs/plates/lasagna.png"
+    },
+    {
+        "name": "Cheese Tortellini",
+        "price": "15.50",
+        "available": true,
+        "description": "Fresh cheese-filled tortellini served with creamy parmesan sauce.",
+        "ingredients": [
+            "Tortellini",
+            "Ricotta cheese",
+            "Parmesan cheese",
+            "Cream",
+            "Nutmeg"
+        ],
+        "category": "First",
+        "imgUrl":"imgs/plates/tortellini.png"
     },
     {
         "name": "Grilled Salmon",
         "price": "18.50",
         "available": true,
-        "description": "Grilled salmon served with steamed vegetables",
+        "description": "Grilled salmon served with steamed vegetables.",
         "ingredients": [
             "Salmon",
             "Broccoli",
             "Carrots",
             "Olive oil"
         ],
-        "category": "Main"
+        "category": "Second",
+        "imgUrl":"imgs/plates/grilledSalmon.png"
     },
     {
-        "name": "Margherita Pizza",
-        "price": "14.99",
+        "name": "Italian Meatballs",
+        "price": "14.50",
         "available": true,
-        "description": "Classic Italian pizza with mozzarella, tomato and basil",
-        "ingredients": [
-            "Pizza dough",
-            "Mozzarella",
-            "Tomato sauce",
-            "Fresh basil"
-        ],
-        "category": "Main"
-    },
-    {
-        "name": "Caesar Salad",
-        "price": "9.50",
-        "available": true,
-        "description": "Fresh romaine lettuce with Caesar dressing and croutons",
-        "ingredients": [
-            "Romaine lettuce",
-            "Parmesan cheese",
-            "Croutons",
-            "Caesar dressing"
-        ],
-        "category": "Starter"
-    },
-    {
-        "name": "Beef Lasagna",
-        "price": "16.75",
-        "available": true,
-        "description": "Homemade lasagna layered with beef and cheese",
+        "description": "Homemade meatballs served with rich tomato sauce and fresh herbs.",
         "ingredients": [
             "Ground beef",
-            "Lasagna pasta",
-            "Mozzarella",
-            "Tomato sauce"
-        ],
-        "category": "Main"
-    },
-    {
-        "name": "Chicken Alfredo",
-        "price": "15.25",
-        "available": true,
-        "description": "Creamy Alfredo pasta topped with grilled chicken",
-        "ingredients": [
-            "Fettuccine",
-            "Chicken breast",
             "Parmesan cheese",
-            "Heavy cream"
-        ],
-        "category": "Main"
-    },
-    {
-        "name": "Mushroom Risotto",
-        "price": "13.90",
-        "available": false,
-        "description": "Creamy risotto made with fresh mushrooms",
-        "ingredients": [
-            "Arborio rice",
-            "Mushrooms",
-            "Parmesan cheese",
-            "Vegetable broth"
-        ],
-        "category": "Main"
-    },
-    {
-        "name": "Tomato Soup",
-        "price": "7.99",
-        "available": true,
-        "description": "Creamy tomato soup served with toasted bread",
-        "ingredients": [
-            "Tomatoes",
-            "Cream",
             "Garlic",
-            "Basil"
-        ],
-        "category": "Starter"
-    },
-    {
-        "name": "Chocolate Lava Cake",
-        "price": "6.50",
-        "available": true,
-        "description": "Warm chocolate cake with a melted chocolate center",
-        "ingredients": [
-            "Dark chocolate",
-            "Butter",
-            "Eggs",
-            "Flour"
-        ],
-        "category": "Dessert"
-    },
-    {
-        "name": "Cheesecake",
-        "price": "6.99",
-        "available": true,
-        "description": "Creamy cheesecake with strawberry topping",
-        "ingredients": [
-            "Cream cheese",
-            "Sugar",
-            "Eggs",
-            "Strawberry syrup"
-        ],
-        "category": "Dessert"
-    },
-    {
-        "name": "Garlic Bread",
-        "price": "5.50",
-        "available": true,
-        "description": "Toasted bread with garlic butter and herbs",
-        "ingredients": [
-            "French bread",
-            "Butter",
-            "Garlic",
+            "Tomato sauce",
             "Parsley"
         ],
-        "category": "Starter"
+        "category": "Second",
+        "imgUrl":"imgs/plates/meatBalls.png"
     },
     {
-        "name": "Shrimp Tacos",
-        "price": "12.80",
+        "name": "Grilled Swordfish",
+        "price": "21.50",
         "available": true,
-        "description": "Soft tacos filled with grilled shrimp and fresh vegetables",
+        "description": "Grilled swordfish seasoned with herbs and served with roasted vegetables.",
+        "ingredients": [
+            "Swordfish",
+            "Rosemary",
+            "Garlic",
+            "Zucchini",
+            "Bell peppers"
+        ],
+        "category": "Second",
+        "imgUrl":"imgs/plates/swordfish.png"
+    },
+    {
+        "name": "Seafood Salad",
+        "price": "17.90",
+        "available": true,
+        "description": "Fresh seafood salad with mixed greens and lemon dressing.",
         "ingredients": [
             "Shrimp",
-            "Tortillas",
-            "Cabbage",
-            "Lime"
+            "Squid",
+            "Mussels",
+            "Mixed greens",
+            "Lemon dressing"
         ],
-        "category": "Main"
+        "category": "Side",
+        "imgUrl":"imgs/plates/seafoodSalad.png"
+    },
+    {
+        "name": "Shrimp and Vegetable Salad",
+        "price": "15.90",
+        "available": true,
+        "description": "Fresh shrimp with seasonal vegetables and light vinaigrette.",
+        "ingredients": [
+            "Shrimp",
+            "Lettuce",
+            "Cherry tomatoes",
+            "Cucumber",
+            "Olive oil"
+        ],
+        "category": "Side",
+        "imgUrl":"imgs/plates/shrimpandVegetableSalad.png"
     }
 ]
