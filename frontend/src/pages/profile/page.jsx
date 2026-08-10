@@ -4,6 +4,7 @@ import authServices from "../../services/auth.jsx"
 import orderServices from "../../services/order.jsx"
 import styles from "./page.module.css"
 import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu";
+import Loading from "../loading/page.jsx"
 
 export default function Profile() {    
     const navigate = useNavigate()
@@ -23,7 +24,7 @@ export default function Profile() {
     }, [refetchOrders]);
 
     if (!ordersList) {
-        return ( <h1>Loading...</h1> )
+        return ( <Loading></Loading> )
     }
 
     const handleLogout = () => {
