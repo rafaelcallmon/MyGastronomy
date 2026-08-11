@@ -1,0 +1,25 @@
+.footerContainer {
+    display: flex;
+    align-items: center;
+    background-color: #004643;
+    padding: 5px;
+    color: #faf0ca;
+    padding-right: 20px;
+}
+
+.logo {
+    width: 5em
+}
+
+a {
+    color: #faf0ca;
+}
+
+.footerLinksContainer {
+    display: flex;
+    gap: 20px;
+}
+
+footer div {
+    margin-left: auto;
+}
