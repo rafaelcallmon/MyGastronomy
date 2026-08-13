@@ -6,28 +6,63 @@ export function CartProvider({ children }) {
     const [ cartItems, setCartItems ] = useState([])
 
     const addToCart = (itemToAdd) => {
-        const checkItemAlready = cartItems.find((cartItem) => {
-            return cartItem._id === itemToAdd._id
-        })
+        setCartItems((currentItems) => {
+            const checkItemAlready = currentItems.find((cartItem) => {
+                return cartItem._id === itemToAdd._id
+            })
 
-        if (!checkItemAlready) {
-            itemToAdd.quantity = 1
-            setCartItems([...cartItems, itemToAdd])
-            console.log('Item added correctly');
-        } else {
-            console.log('Item already on cart');
+            if (!checkItemAlready) {
+                return [
+                    ...currentItems,
+                    {
+                        ...itemToAdd,
+                        quantity: 1
+                    }
+                ]
+            }
+
+            return currentItems.map((item) => {
+                if (item._id === itemToAdd._id) {
+                    return {
+                            ...item,
+                            quantity: item.quantity + 1
+                        }
+                    
+                }
+
+                return item
+            })
+        })
+    }
+
+    const decreaseItem = (itemToDecrease) => {
+        if (itemToDecrease.quantity === 1) {
+            removeFromCart(itemToDecrease._id)
+            return
         }
 
-        console.log(cartItems);
-        
+        setCartItems((currentItems) => {
+            return currentItems.map((item) => {
+                if (item._id === itemToDecrease._id) {
+                    return {
+                        ...item,
+                        quantity: item.quantity - 1
+                    }
+                }
+
+                return item
+            })
+        })
     }
 
     const removeFromCart = (itemId) => {
-
+        setCartItems((currentItems) => {
+            return currentItems.filter((item) => item._id !== itemId)
+        })
     }
 
     return (
-        <CartContext.Provider value={{ removeFromCart, addToCart, cartItems }}>
+        <CartContext.Provider value={{ removeFromCart, addToCart, decreaseItem, cartItems }}>
             {children}
         </CartContext.Provider>
     )

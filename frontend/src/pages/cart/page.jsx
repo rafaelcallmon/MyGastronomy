@@ -3,7 +3,7 @@ import styles from "./page.module.css"
 import { LuCircleMinus } from 'react-icons/lu'
 
 export default function Cart() {
-    const { cartItems } = useCartContext()
+    const { cartItems, addToCart, removeFromCart, decreaseItem } = useCartContext()
 
     console.log(cartItems);
 
@@ -32,12 +32,12 @@ export default function Cart() {
                                     <p>Portions:</p>
                                     <p>{item.quantity}</p>
                                     <div className={styles.portionsBtns}>
-                                        <button>-</button>
-                                        <button>+</button>
+                                        <button onClick={() => decreaseItem(item)}>-</button>
+                                        <button onClick={() => addToCart(item)}>+</button>
                                     </div>
                                 </div>
 
-                                <button> <LuCircleMinus/> Remove item </button>
+                                <button onClick={() => {removeFromCart(item._id)}}> <LuCircleMinus/> Remove item </button>
                             </div>
                         </div>
                     ))}
