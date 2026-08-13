@@ -1,0 +1,56 @@
+.itemContainer {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1em;
+}
+
+.itemContainer img {
+    width: 200px;
+    border-radius: 1em;
+}
+
+.itemsListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+}
+
+.itemContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.itemContent p {
+    text-align: left;
+}
+
+.portionsContainer {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.portionsBtns {
+    display: flex;
+    gap: 0.3em;
+    height: 40px;
+}
+
+.confirmBtn {
+    position: sticky;
+    font-size: large;
+    bottom: 2em;
+    margin: auto;
+    margin-bottom: 30px;
+    margin-right: 15px;
+}
