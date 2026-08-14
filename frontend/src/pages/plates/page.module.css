@@ -1,0 +1,31 @@
+.platesContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 40px;
+    gap: 1em;
+    row-gap: 30px;
+    margin-bottom: 40px;
+}
+
+.pageContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .platesContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .platesContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .pageContainer {
+        text-align: center;
+    }
+}
+
