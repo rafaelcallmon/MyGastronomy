@@ -29,8 +29,7 @@ export default function Cart() {
                                 <p>[{String(item.ingredients)}]</p>
                                 <p>{item.description}</p>
                                 <div className={styles.portionsContainer}>
-                                    <p>Portions:</p>
-                                    <p>{item.quantity}</p>
+                                    <p>Portions: {item.quantity}</p>
                                     <div className={styles.portionsBtns}>
                                         <button onClick={() => decreaseItem(item)}>-</button>
                                         <button onClick={() => addToCart(item)}>+</button>

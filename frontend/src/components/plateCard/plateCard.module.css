@@ -10,8 +10,8 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: end;
-    width: 320px;
-    height: 420px;
+    width: 220px;
+    height: 320px;
 }
 
 .cardContent {
@@ -33,6 +33,30 @@ img {
     border-bottom-right-radius: 0.5em;
 }
 
-.price {
+.price1, .price2 {
     text-align: right;
+}
+
+.price2, .name2 {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    .cardContainer {
+        width: 150px;
+        height: 250px;
+    }
+
+
+    .price1, .name1 {
+        display: none;
+    }
+
+    .price2, .name2 {
+        display: block;
+    }
+
+    .price2 {
+        margin-right: 5px;
+    }
 }

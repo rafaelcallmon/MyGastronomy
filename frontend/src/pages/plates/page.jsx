@@ -43,20 +43,23 @@ export default function Plates() {
 
     
     return (
-        <>
-            <div>
-                {platesList.map((plate) => (
-                    <div key={plate._id} className={styles.cardContainer} onClick={() => { handleSelectedPlate(plate) }}>
-                        <PlateCard plateData={plate}></PlateCard>
-                    </div>
-                ))}
-            </div>
+        <> 
+            <div className={styles.pageContainer}>
+                <h1>Discover Our Plates</h1>
+                <div className={styles.platesContainer}>
+                    {platesList.map((plate) => (
+                        <div key={plate._id} className={styles.cardContainer} onClick={() => { handleSelectedPlate(plate) }}>
+                            <PlateCard plateData={plate}></PlateCard>
+                        </div>
+                    ))}
+                </div>
 
-            {plateSelected && (
-                <>
-                    <PlatePopup plateData={plateSelected} onClose={handleClosePopup} onAddToCart={handleAddToCart}/>  
-                </>
-            )}
+                {plateSelected && (
+                    <>
+                        <PlatePopup plateData={plateSelected} onClose={handleClosePopup} onAddToCart={handleAddToCart}/>  
+                    </>
+                )}
+            </div>
         </>
     )
 }
