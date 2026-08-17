@@ -18,6 +18,6 @@ export const serverError = (error) => {
     return {
         success: false,
         statusCode: 500,
-        body: error
+        body: error.message
     }
 }
