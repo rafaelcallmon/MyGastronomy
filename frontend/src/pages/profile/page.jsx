@@ -33,6 +33,10 @@ export default function Profile() {
         navigate("/")
     }
 
+    ordersList.forEach(order => {
+        console.log(order);
+        
+    });
 
 
     return (
@@ -55,9 +59,12 @@ export default function Profile() {
                             {order.orderItems.map((item) => (
                                 <div key={item._id} className={styles.orderCardItem}>
                                     <h4>{item.itemDetails[0].name}</h4>
-                                    <p>Quantity: {item.quantity}</p>
+                                    <div>Price: $ {item.price.toFixed(2)}</div>
+                                    <div>Quantity: {item.quantity}</div>
+                                    <div>Subtotal: $ {item.subtotal.toFixed(2)}</div>
                                 </div>
                             ))}
+                            <div>Total: $ {order.total.toFixed(2)}</div>
                         </div>
                     ))}
                 </div>

@@ -102,6 +102,7 @@ export default class OrdersDataAccess {
                     pickUpStatus: { $first: '$pickUpStatus'},
                     pickupTime: { $first: '$pickupTime'},
                     userDetails: { $first: '$userDetails'},
+                    total: { $first: '$total'},
                     orderItems: { $push: '$orderItems'}
                 }
             }
@@ -114,9 +115,31 @@ export default class OrdersDataAccess {
     async addOrder(orderData) {
         const { items, ...orderDataRest } = orderData
 
+        await Promise.all(
+            items.map(async (item) => {
+                const plate = await Mongo.db
+                    .collection('plates')
+                    .findOne({_id: new ObjectId(item.plateId)})
+
+                if (!plate) {
+                    throw new Error(`Plate with id: ${item.plateId} cannot be found`)
+                }
+
+                item.price = plate.price
+                item.subtotal = plate.price * item.quantity
+            })
+        )
+
+        let total = 0
+
+        items.forEach(item => {
+            total = total + item.subtotal
+        });
+
         orderDataRest.createdAt = new Date()
         orderDataRest.pickUpStatus = 'Pending'
         orderDataRest.userId = new ObjectId(orderDataRest.userId)
+        orderDataRest.total = total
 
         const newOrder = await Mongo.db
         .collection(collectionName)

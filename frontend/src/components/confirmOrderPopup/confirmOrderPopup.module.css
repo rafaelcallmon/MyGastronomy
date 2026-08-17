@@ -1,0 +1,13 @@
+.popupContainer {
+    background-color: #faf0ca;
+    color: #004643;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+
+.confirmBtns {
+    display: flex;
+    gap: 0.5em;
+}
