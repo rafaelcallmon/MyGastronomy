@@ -22,6 +22,7 @@
     border-radius: 15px;
     width: fit-content;
     margin: auto;
+    margin-top: 100px;
 }
 
 
@@ -44,19 +45,28 @@
     font-size: large;
 }
 
-.pending {
+.pending, .pendingBtn {
     background-color: rgb(173, 154, 10);
 }
 
-.completed {
+.completed, .completedBtn {
     background-color: rgb(43, 116, 23);
 }
 
-.canceled {
+.canceled, .canceledBtn {
     background-color: rgb(155, 57, 57);
 }
 
 .platesLink {
     color: #faf0ca;
+    text-decoration: underline;
+}
+
+.filterContainer {
+    display: flex;
+    gap: 0.5em;
+}
+
+.selected {
     text-decoration: underline;
 }
