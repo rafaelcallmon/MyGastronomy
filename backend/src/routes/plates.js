@@ -1,5 +1,7 @@
 import express from 'express'
 import PlatesControllers from '../controllers/plates.js'
+import authMiddleware from '../middlewares/auth.js'
+import adminMiddleware from '../middlewares/admin.js'
 
 const platesRouter = express.Router()
 
@@ -17,7 +19,7 @@ platesRouter.get('/availables', async (req, res) => {
     res.status(statusCode).send({ success, statusCode, body })
 })
 
-platesRouter.post('/', async (req, res) => {
+platesRouter.post('/', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.addMultiplePlates(req.body)
 
     res.status(statusCode).send({ success, statusCode, body})
