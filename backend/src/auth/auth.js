@@ -74,7 +74,8 @@ authRouter.post('/signup', async (req, res) => {
             fullname: req.body.fullname,
             email: req.body.email,
             password: hashedPassword,
-            salt: salt
+            salt: salt,
+            role: "user"
         })
 
         if (result.insertedId) {
@@ -82,7 +83,7 @@ authRouter.post('/signup', async (req, res) => {
             .collection(collectionName)
             .findOne({ _id: new ObjectId(result.insertedId) })
 
-            const token = jwt.sign(user, 'secret')
+            const token = jwt.sign(user, process.env.JWT_SECRET)
 
             return res.send({
                 success: true,
@@ -122,7 +123,7 @@ authRouter.post('/login', async (req, res) => {
             })
         }
 
-        const token = jwt.sign(user, 'secret')
+        const token = jwt.sign(user, process.env.JWT_SECRET)
 
         return res.status(200).send({
                 success: true,
