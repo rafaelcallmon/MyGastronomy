@@ -5,10 +5,11 @@ import orderServices from "../../services/order.jsx"
 import styles from "./page.module.css"
 import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu";
 import Loading from "../loading/page.jsx"
+import { useAuth } from "../../contexts/authContext.jsx"
 
 export default function Profile() {    
     const navigate = useNavigate()
-    const { logout } = authServices()
+    const { logout } = useAuth()
     const { getUserOrders, orderLoading, refetchOrders, ordersList } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
 

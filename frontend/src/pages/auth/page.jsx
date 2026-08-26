@@ -4,11 +4,13 @@ import styles from "./page.module.css"
 import authServices from "../../services/auth.jsx"
 import { Navigate } from 'react-router-dom'
 import { LuLogIn } from "react-icons/lu";
+import { useAuth } from "../../contexts/authContext.jsx"
+import Loading from "../loading/page.jsx"
 
 export default function Auth() {
     const [formType, setFormType] = useState('login')
     const [formData, setFormData] = useState(null)
-    const { login, signup, authLoading } = authServices()
+    const { login, signup, loading} = useAuth()
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     if (authData) {
@@ -53,9 +55,9 @@ export default function Auth() {
         }
     }
 
-    if (authLoading) {
+    if (loading) {
         return (
-            <h1>Loading...</h1>
+            <Loading></Loading>
         )
     }
 

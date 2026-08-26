@@ -139,4 +139,34 @@ authRouter.post('/login', async (req, res) => {
     })(req, res)
 })
 
+authRouter.get('/authenticate', async (req, res) => {
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+        return res.status(401).send({
+            success: false,
+            message: 'Token not provided'
+        })
+    }
+
+    const token = authHeader.split(' ')[1]
+
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET)
+    
+        req.user = user
+    
+        return res.status(200).send({
+                success: true,
+                statusCode: 200,
+                body: user
+            })
+    } catch (error) {
+        res.status(401).send({
+                success: false,
+                message: 'Invalid token'
+            })
+        }
+})
+
 export default authRouter

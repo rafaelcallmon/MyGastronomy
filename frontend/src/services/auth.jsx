@@ -5,78 +5,100 @@ export default function authServices () {
 
     const url = 'http://localhost:3000/auth'
 
-    const login = (formData) => {
+    const getUser = async (token) => {
+        try {
+            const response = await fetch(`${url}/authenticate`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            const result = await response.json()
+
+            if (result.success) {
+                return result.body
+            }
+
+            return null
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+}
+
+    const login = async (formData) => {
         setAuthLoading(true)
 
-        fetch(`${url}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(async (response) => {
-            console.log("Status:", response.status);
+        try {
+            const response = await fetch(`${url}/login`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
 
-            const data = await response.json();
+            const result = await response.json()
 
-            console.log("Resposta:", data);
-
-            return data;
-        })
-        .then((result) => {
-            console.log(result)
             if (result.success && result.body.token) {
-                localStorage.setItem(
-                    'auth',
-                    JSON.stringify({token: result.body.token,
-                        user: result.body.user
-                    }))
+                const authData = {
+                    token: result.body.token,
+                    user: result.body.user
+                }
+
+                localStorage.setItem('auth', JSON.stringify(authData))
+
+                return authData
             }
-        })
-        .catch ((error) => {
+
+            return null
+        } catch (error) {
             console.log(error);
-        })
-        .finally(() => {
+            return null
+        } finally {
             setAuthLoading(false)
-        })
+        }
     }
 
     const logout = () => {
         localStorage.removeItem('auth')
     }
 
-    const signup = (formData) => {
+    const signup = async (formData) => {
         setAuthLoading(true)
 
-        fetch(`${url}/signup`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then((respone) => respone.json())
-        .then((result) => {
-            console.log(result)
+        try {
+            const respone = await fetch(`${url}/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+
+            const result = await respone.json()
 
             if (result.success && result.body.token) {
-                localStorage.setItem(
-                    'auth',
-                    JSON.stringify({token: result.body.token,
+                const authData = {
+                        token: result.body.token,
                         user: result.body.user
-                    }))
+                    }
+
+                localStorage.setItem('auth', JSON.stringify(authData))
+
+                return authData
             }
-        })
-        .catch ((error) => {
+
+            return null
+        } catch (error) {
             console.log(error);
-        })
-        .finally(() => {
+            return null
+        } finally {
             setAuthLoading(false)
-        })
+        }
     }
 
-    return { signup, login, logout, authLoading }
+    return { signup, login, logout, getUser, authLoading }
 }
