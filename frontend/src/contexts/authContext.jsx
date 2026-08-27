@@ -6,6 +6,7 @@ const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true);
+    const isAdmin = user?.role === 'admin'
     const { login, logout, signup, getUser } = authServices()
 
     useEffect(() => {
@@ -40,6 +41,9 @@ export const AuthProvider = ({ children }) => {
 
         if (result) {
             setUser(result.user)
+            if (result.user.role === 'admin') {
+                setIsAdmin(true)
+            }
         }
 
         return result
@@ -56,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{isAuthenticated: !!user, user, loading, login: contextLogin, signup: contextSignup, logout: contextLogout}}>
+        <AuthContext.Provider value={{isAuthenticated: !!user, user, loading, isAdmin, login: contextLogin, signup: contextSignup, logout: contextLogout}}>
             {children}
         </AuthContext.Provider>
     )

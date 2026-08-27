@@ -47,6 +47,7 @@ export default class OrdersDataAccess {
                     pickUpStatus: { $first: '$pickUpStatus'},
                     pickupTime: { $first: '$pickupTime'},
                     userDetails: { $first: '$userDetails'},
+                    total: { $first: '$total'},
                     orderItems: { $push: '$orderItems'}
                 }
             }

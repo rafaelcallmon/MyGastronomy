@@ -4,7 +4,7 @@ import styles from "./page.module.css"
 import { LuCircleMinus } from 'react-icons/lu'
 import ConfirmOrderPopupPopup from "../../components/confirmOrderPopup/confirmOrderPopup"
 import orderServices from "../../services/order"
-import { Navigate } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 
 export default function Cart() {
     const { cartItems, addToCart, removeFromCart, decreaseItem, clearCart } = useCartContext()
@@ -34,9 +34,9 @@ export default function Cart() {
 
     if (!cartItems.length) {
         return (
-            <div>
+            <div className={styles.emptyCartContainer}>
                 <h1>Your cart is empty... :/</h1>
-                <button>See our specialities!</button>
+                <Link to={'/plates'}><button>See our specialities!</button></Link>
             </div>
         )
     }

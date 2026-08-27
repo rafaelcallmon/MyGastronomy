@@ -1,35 +1,35 @@
-import { useEffect, useState } from "react"
-import { Link } from 'react-router-dom'
-import orderServices from "../../services/order.jsx"
-import styles from "./page.module.css"
+import { useAuth } from "../../../contexts/authContext"
+import orderServices from "../../../services/order.jsx"
 import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu";
-import Loading from "../loading/page.jsx"
-import { useAuth } from "../../contexts/authContext.jsx"
+import Loading from "../../loading/page.jsx"
+import { useEffect, useState } from "react"
+import styles from "./page.module.css"
 
-export default function Profile() {    
+export default function AdminOrdersPage() {
     const { logout } = useAuth()
-    const { getUserOrders, refetchOrders, ordersList } = orderServices()
+    const { getAllOrders, ordersList, refetchOrders } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
-
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
         if (refetchOrders) {
-            getUserOrders(authData.user._id);
+            getAllOrders(authData?.token)
         }
-    }, [refetchOrders]);
+    }, [refetchOrders])
 
     if (!ordersList) {
-        return ( <Loading></Loading> )
+        return <Loading></Loading>
     }
+
+    const filteredOrders = selectedStatus === 'All'? ordersList : ordersList.filter(order => order.pickUpStatus === selectedStatus)
+    console.log(filteredOrders);
     
-    const filteredOrders = selectedStatus === 'All' ? ordersList : ordersList.filter(order => order.pickUpStatus === selectedStatus)
 
     const handleLogout = () => {
         logout()
     }
 
-    return (
+        return (
         <div className={styles.pageContainer}>
             <div>
                 <h1>{authData?.user?.fullname}</h1>
@@ -49,7 +49,7 @@ export default function Profile() {
 
                     {filteredOrders.length === 0 ? 
                         <div className={styles.noOrderCard}>
-                            You do not have any order with "{selectedStatus}" status yet.
+                            We do not have any order with "{selectedStatus}" status yet.
                         </div>
                     
                     :
@@ -80,11 +80,11 @@ export default function Profile() {
                 :
 
                 <div className={styles.noOrderCard}>
-                    You do not have orders yet. <br /> <br />
-                    <Link to={"/plates"} className={styles.platesLink}>Click here to see our plates</Link>
+                    No orders registered yet.
                 </div>
             }
 
         </div>
     )
+
 }

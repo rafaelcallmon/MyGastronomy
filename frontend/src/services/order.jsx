@@ -35,6 +35,33 @@ export default function orderServices() {
 
     }
 
+    const getAllOrders = (token) => {
+        setOrderLoading(true)
+
+        fetch(`${url}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((respone) => respone.json())
+        .then((result) => {
+            if (result.success) {
+                setOrdersList(result.body)
+            } else {
+                console.log(result)
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            setOrderLoading(false)
+            setRefetchOrders(false)
+        })
+    }
+
     const sendOrder = (orderData) => {
 
         fetch(`${url}`, {
@@ -58,5 +85,5 @@ export default function orderServices() {
 
     }
 
-    return { getUserOrders, orderLoading, refetchOrders, ordersList, sendOrder }
+    return { getUserOrders, getAllOrders, orderLoading, refetchOrders, ordersList, sendOrder }
 }

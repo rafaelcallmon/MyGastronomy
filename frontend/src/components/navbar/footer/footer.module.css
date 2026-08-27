@@ -23,3 +23,9 @@ a {
 footer div {
     margin-left: auto;
 }
+
+@media screen {
+    footer div {
+        font-size: medium;
+    }
+}

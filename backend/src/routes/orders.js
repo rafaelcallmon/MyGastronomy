@@ -1,11 +1,13 @@
 import express from 'express'
 import OrdersControllers from '../controllers/orders.js'
+import authMiddleware from '../middlewares/auth.js'
+import adminMiddleware from '../middlewares/admin.js'
 
 const ordersRouter = express.Router()
 
 const ordersControllers = new OrdersControllers()
 
-ordersRouter.get('/', async (req, res) => {
+ordersRouter.get('/', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await ordersControllers.getOrders()
 
     res.status(statusCode).send({ success, statusCode, body })
