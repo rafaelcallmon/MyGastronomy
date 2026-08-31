@@ -43,6 +43,9 @@
     width: fit-content;
     padding: 0.3em;
     font-size: large;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
 
 .pending, .pendingBtn {
@@ -65,8 +68,33 @@
 .filterContainer {
     display: flex;
     gap: 0.5em;
+    flex-wrap: wrap;
 }
 
 .selected {
     text-decoration: underline;
+}
+
+.orderHeadContainer {
+    display: flex;
+    justify-content: space-between
+}
+
+.userDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.orderItemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-left: 1em;
+}
+
+.itemsHeaders {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
