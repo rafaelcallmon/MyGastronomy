@@ -10,7 +10,7 @@ export default function AdminOrdersPage() {
     const { logout } = useAuth()
     const { getAllOrders, ordersList, refetchOrders } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
-    const [ expandedOrderItems, setExpandedOrderItems ] = useState(null)
+    const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
@@ -32,9 +32,20 @@ export default function AdminOrdersPage() {
     }
 
     const handleExpandOrder = (orderId) => {
-        setExpandedOrderItems(
-            expandedOrderItems === orderId ? null : orderId
-        )
+        setexpandedOrderItemsList((currentOrdersIds) => {
+            const checkOrderId = currentOrdersIds.find((id) => {
+                return id === orderId
+            })
+
+            if (checkOrderId) {
+                return currentOrdersIds.filter((id) => id !== orderId)
+            }
+
+            return [
+                ...currentOrdersIds,
+                orderId
+            ]
+        })
     }
 
         return (
@@ -77,10 +88,10 @@ export default function AdminOrdersPage() {
                                     <h4>PickupTime: {order.pickupTime}</h4>   
                                 </div>
                                 <div className={styles.itemsHeaders} onClick={() => {handleExpandOrder(order._id)}}>
-                                    { expandedOrderItems === order._id ? <LuChevronUp/> : <LuChevronDown/> }
+                                    { expandedOrderItemsList.find((id) => {return id === order._id}) ? <LuChevronUp/> : <LuChevronDown/> }
                                     <h3>Items:</h3>
                                 </div>
-                                {expandedOrderItems === order._id && (
+                                {expandedOrderItemsList.find((id) => {return id === order._id}) && (
                                     <div className={styles.orderItemsContainer}>
                                         {order.orderItems.map((item) => (
                                             <div key={item._id} className={styles.orderCardItem}>
