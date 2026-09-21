@@ -4,13 +4,15 @@ import { LuLogOut, LuTimer, LuCircleAlert, LuCircleCheck } from "react-icons/lu"
 import Loading from "../../loading/page.jsx"
 import { useEffect, useState } from "react"
 import styles from "./page.module.css"
-import { LuChevronDown, LuChevronUp } from "react-icons/lu";
+import { LuChevronDown, LuChevronUp, LuTrash } from "react-icons/lu";
+import ConfirmDeleteOrderPopup from "../../../components/confirmDeleteOrderPopup/confirmDeleteOrderPopup.jsx";
 
 export default function AdminOrdersPage() {
     const { logout } = useAuth()
-    const { getAllOrders, ordersList, refetchOrders } = orderServices()
+    const { getAllOrders, ordersList, refetchOrders, cancelOrder } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
+    const [orderToCancel, setOrderToCancel] = useState(null)
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
@@ -26,6 +28,15 @@ export default function AdminOrdersPage() {
     const filteredOrders = selectedStatus === 'All'? ordersList : ordersList.filter(order => order.pickUpStatus === selectedStatus)
     console.log(filteredOrders);
     
+    const handleClosePopup = () => {
+        setOrderToCancel(null)
+    }
+
+    const handleConfirmCancel = (orderId) => {
+        // BOTAR AWAIT
+        cancelOrder(orderId, authData?.token)
+        setOrderToCancel(null)
+    }
 
     const handleLogout = () => {
         logout()
@@ -51,7 +62,7 @@ export default function AdminOrdersPage() {
         return (
         <div className={styles.pageContainer}>
             <div>
-                <h1>{authData?.user?.fullname}</h1>
+                <h1>{authData?.user?.fullname} (Admin)</h1>
                 <h3>{authData?.user?.email}</h3>
             </div>
 
@@ -81,21 +92,21 @@ export default function AdminOrdersPage() {
                                     {order.pickUpStatus === 'Completed' ? <p className={`${styles.pickUpStatus} ${styles.completed}`}> <LuCircleCheck /> {order.pickUpStatus} </p> : null}
                                     {order.pickUpStatus === 'Canceled' ? <p className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</p> : null}
 
-                                    <h3>User: {order.userDetails[0].email}</h3>
+                                    <div>User: {order.userDetails[0].email}</div>
                                 </div>
                                 <div className={styles.userDetailsContainer}>
-                                    <h3>Name: {order.userDetails[0].fullname}</h3>
-                                    <h4>PickupTime: {order.pickupTime}</h4>   
+                                    <div>Name: {order.userDetails[0].fullname}</div>
+                                    <div>PickupTime: {order.pickupTime}</div>   
                                 </div>
                                 <div className={styles.itemsHeaders} onClick={() => {handleExpandOrder(order._id)}}>
                                     { expandedOrderItemsList.find((id) => {return id === order._id}) ? <LuChevronUp/> : <LuChevronDown/> }
-                                    <h3>Items:</h3>
+                                    <div>Items:</div>
                                 </div>
                                 {expandedOrderItemsList.find((id) => {return id === order._id}) && (
                                     <div className={styles.orderItemsContainer}>
                                         {order.orderItems.map((item) => (
                                             <div key={item._id} className={styles.orderCardItem}>
-                                                <h4>{item.itemDetails[0].name}</h4>
+                                                <div>{item.itemDetails[0].name}</div>
                                                 <div>Price: $ {item.price.toFixed(2)}</div>
                                                 <div>Quantity: {item.quantity}</div>
                                                 <div>Subtotal: $ {item.subtotal.toFixed(2)}</div>
@@ -103,7 +114,10 @@ export default function AdminOrdersPage() {
                                         ))}
                                     </div>
                                 )}
-                                <h4>Total: $ {order.total.toFixed(2)}</h4>
+                                <div>Total: $ {order.total.toFixed(2)}</div>
+                                {order.pickUpStatus === 'Pending' && (
+                                    <button className={styles.cancelOrderBtn} onClick={() => {setOrderToCancel(order)}}><LuTrash/> Cancel order</button>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -117,6 +131,10 @@ export default function AdminOrdersPage() {
                     No orders registered yet.
                 </div>
             }
+
+            {orderToCancel && (
+                <ConfirmDeleteOrderPopup onClose={handleClosePopup} onConfirm={() => {handleConfirmCancel(orderToCancel._id)}}></ConfirmDeleteOrderPopup>
+            )}
 
         </div>
     )

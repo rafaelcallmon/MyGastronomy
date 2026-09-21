@@ -190,4 +190,30 @@ export default class OrdersDataAccess {
             return result
     }
 
+    async cancelOrder(orderId, user) {
+        const order = await Mongo.db
+            .collection(collectionName)
+            .findOne({_id: new ObjectId(orderId)})
+
+        if (!order) {
+            throw new Error("Order not found")
+        }
+
+        if (order.userId.toString() !== user._id.toString() && user.role !== 'admin') {
+            throw new Error("This order is not yours to delete")
+        }
+
+        if (order.pickUpStatus !== 'Pending') {
+            throw new Error(`This order cannot be canceled. Pickup status: ${order.pickUpStatus}`)
+        }
+
+        const result = await Mongo.db
+            .collection(collectionName)
+            .findOneAndUpdate(
+                {_id: new ObjectId(orderId)},
+                {$set: {pickUpStatus: 'Canceled'}}
+            )
+
+        return result
+    }
 }

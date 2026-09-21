@@ -23,7 +23,7 @@ export default function Cart() {
             return { plateId: item._id, quantity: item.quantity }
         })
 
-        sendOrder(orderData)
+        sendOrder(orderData, authData.token)
         clearCart()
         setConfirmPopupOpen(!confirmPopupOpen)
     }

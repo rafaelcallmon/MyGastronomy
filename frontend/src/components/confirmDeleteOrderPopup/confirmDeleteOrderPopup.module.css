@@ -1,0 +1,15 @@
+.popupContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    width: 300px;
+    height: 200px;
+    background-color: #faf0ca;
+    color: #004643;
+}
+
+.confirmDeleteBtn {
+    background-color: rgb(214, 50, 50);
+}
