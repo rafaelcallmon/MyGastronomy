@@ -7,14 +7,14 @@ export default function orderServices() {
     
     const url = 'http://localhost:3000/orders'
 
-    const getUserOrders = (userId) => {
+    const getUserOrders = (userId, token) => {
         setOrderLoading(true)
 
         fetch(`${url}/users/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Authorization': `Bearer ${token}`
             }
         })
         .then((response) => response.json())
@@ -62,13 +62,13 @@ export default function orderServices() {
         })
     }
 
-    const sendOrder = (orderData) => {
+    const sendOrder = (orderData, token) => {
 
         fetch(`${url}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(orderData)
         })
@@ -85,5 +85,29 @@ export default function orderServices() {
 
     }
 
-    return { getUserOrders, getAllOrders, orderLoading, refetchOrders, ordersList, sendOrder }
+    const cancelOrder = async (orderId, token) => {
+        try {
+            const respone = await fetch(`${url}/cancel/${orderId}`,{
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            const result = await respone.json()
+
+            console.log(result);
+            
+            if (result.success) {
+                setRefetchOrders(true)
+            }
+
+            return result
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return { getUserOrders, getAllOrders, orderLoading, refetchOrders, setRefetchOrders, ordersList, sendOrder, cancelOrder }
 }

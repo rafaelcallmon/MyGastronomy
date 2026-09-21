@@ -7,31 +7,36 @@ const platesRouter = express.Router()
 
 const platesControllers = new PlatesControllers()
 
-platesRouter.get('/', async (req, res) => {
+// Todos os pratos
+platesRouter.get('/', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.getPlates()
 
     res.status(statusCode).send({ success, statusCode, body })
 })
 
+// Só os disponíveis
 platesRouter.get('/availables', async (req, res) => {
     const { success, statusCode, body } = await platesControllers.getAvailablePlates()
 
     res.status(statusCode).send({ success, statusCode, body })
 })
 
+// Adicionar vários pratos
 platesRouter.post('/', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.addMultiplePlates(req.body)
 
     res.status(statusCode).send({ success, statusCode, body})
 })
 
-platesRouter.delete('/:id', async (req, res) => {
+// Deletar prato
+platesRouter.delete('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.deletePlate(req.params.id)
 
     res.status(statusCode).send({ success, statusCode, body })
 })
 
-platesRouter.put('/:id', async (req, res) => {
+// Atualizar dados do pratos
+platesRouter.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.updatePlate(req.params.id, req.body)
 
     res.status(statusCode).send({ success, statusCode, body })

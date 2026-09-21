@@ -56,4 +56,14 @@ export default class OrdersControllers {
         }
     }
 
+    async cancelOrder(orderId, user) {
+        try {
+            const result = await this.dataAccess.cancelOrder(orderId, user)
+
+            return ok(result)
+        } catch (error) {
+            return serverError(error)
+        }
+    }
+
 }
