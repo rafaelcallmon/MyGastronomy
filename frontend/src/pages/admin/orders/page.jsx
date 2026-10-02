@@ -11,6 +11,7 @@ export default function AdminOrdersPage() {
     const { logout } = useAuth()
     const { getAllOrders, ordersList, refetchOrders, cancelOrder } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
+    const [ valueToSearch, setValueToSearch ] = useState('')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
     const [orderToCancel, setOrderToCancel] = useState(null)
     const authData = JSON.parse(localStorage.getItem('auth'))
@@ -25,7 +26,12 @@ export default function AdminOrdersPage() {
         return <Loading></Loading>
     }
 
-    const filteredOrders = selectedStatus === 'All'? ordersList : ordersList.filter(order => order.pickUpStatus === selectedStatus)
+    const filteredOrders = ordersList.filter(order => {
+        const checkStatus = selectedStatus === 'All'? true : order.pickUpStatus === selectedStatus
+        const checkValueToSearch = order.userDetails[0].fullname.toLowerCase().includes(valueToSearch.toLowerCase()) || order.userDetails[0].email.toLowerCase().includes(valueToSearch.toLowerCase()) 
+
+        return checkStatus && checkValueToSearch
+    })
     console.log(filteredOrders);
     
     const handleClosePopup = () => {
@@ -75,11 +81,12 @@ export default function AdminOrdersPage() {
                         <button onClick={() => setSelectedStatus('Pending')} className={`${styles.pendingBtn} ${selectedStatus === 'Pending' ? styles.selected : ''}`}>Pending</button>
                         <button onClick={() => setSelectedStatus('Completed')} className={`${styles.completedBtn} ${selectedStatus === 'Completed' ? styles.selected : ''}`}>Completed</button>
                         <button onClick={() => setSelectedStatus('Canceled')} className={`${styles.canceledBtn} ${selectedStatus === 'Canceled' ? styles.selected : ''}`}>Canceled</button>
+                        <input className={styles.searchInput} type="text" placeholder="Search by name or email" value={valueToSearch} onChange={(event) => setValueToSearch(event.target.value)}/>
                     </div>
 
                     {filteredOrders.length === 0 ? 
                         <div className={styles.noOrderCard}>
-                            We do not have any order with "{selectedStatus}" status yet.
+                            No orders found
                         </div>
                     
                     :
