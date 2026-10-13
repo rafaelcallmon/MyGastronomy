@@ -11,6 +11,8 @@ export default function AdminOrdersPage() {
     const { logout } = useAuth()
     const { getAllOrders, ordersList, refetchOrders, cancelOrder } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
+    const [ sortOrder, setSortOrder ] = useState('newest')
+    const [ selectedDate, setSelectedDate ] = useState("")
     const [ valueToSearch, setValueToSearch ] = useState('')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
     const [orderToCancel, setOrderToCancel] = useState(null)
@@ -26,13 +28,36 @@ export default function AdminOrdersPage() {
         return <Loading></Loading>
     }
 
+    const getOrderDate = (order) => {
+        const orderPickupData = order.pickupTime.split(" - ")
+        const orderTimeInfo = orderPickupData[0].split(":")
+        const orderDateInfo = orderPickupData[1].split("/")
+
+        const orderDate = new Date(orderDateInfo[2], orderDateInfo[1] - 1, orderDateInfo[0], orderTimeInfo[0], orderTimeInfo[1])
+
+        return orderDate
+    }
+
     const filteredOrders = ordersList.filter(order => {
         const checkStatus = selectedStatus === 'All'? true : order.pickUpStatus === selectedStatus
         const checkValueToSearch = order.userDetails[0].fullname.toLowerCase().includes(valueToSearch.toLowerCase()) || order.userDetails[0].email.toLowerCase().includes(valueToSearch.toLowerCase()) 
 
-        return checkStatus && checkValueToSearch
+        // Verificando data
+        const orderDate = getOrderDate(order)
+        
+        const dateToCompareInfo = selectedDate.split("-")
+
+        const dateToCompare = selectedDate === "" ? null : new Date(dateToCompareInfo[0], dateToCompareInfo[1] - 1, dateToCompareInfo[2])
+
+        const checkDate = selectedDate === "" ? true : orderDate.getDate() === dateToCompare.getDate() && orderDate.getMonth() === dateToCompare.getMonth() && orderDate.getFullYear() === dateToCompare.getFullYear()
+        
+        return checkStatus && checkValueToSearch && checkDate
     })
-    console.log(filteredOrders);
+
+    const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
+    [...filteredOrders].sort((a, b) => { return getOrderDate(a).getTime() - getOrderDate(b).getTime() }) 
+    
+    console.log(selectedDate)
     
     const handleClosePopup = () => {
         setOrderToCancel(null)
@@ -84,7 +109,16 @@ export default function AdminOrdersPage() {
                         <input className={styles.searchInput} type="text" placeholder="Search by name or email" value={valueToSearch} onChange={(event) => setValueToSearch(event.target.value)}/>
                     </div>
 
-                    {filteredOrders.length === 0 ? 
+                    <div className={styles.dateFilterContainer}>
+                        <div className={styles.dateFilter}><label htmlFor="">Date: </label> <input type="date" value={selectedDate}  onChange={(event) => setSelectedDate(event.target.value)}></input></div>
+                        <div className={styles.dateFilter}><label htmlFor="">Sort By: </label> 
+                        <select name="sortOrders" id="sortOrders" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+                            <option value="newest">Newest First</option>    
+                            <option value="oldest">Oldest First</option>    
+                        </select></div>
+                    </div>
+
+                    {sortedOrders.length === 0 ? 
                         <div className={styles.noOrderCard}>
                             No orders found
                         </div>
@@ -92,7 +126,7 @@ export default function AdminOrdersPage() {
                     :
 
                     <div className={styles.ordersContainer}>
-                        {filteredOrders.map((order) => (
+                        {sortedOrders.map((order) => (
                             <div key={order._id} className={styles.orderCard}>
                                 <div className={styles.orderHeadContainer}>
                                     {order.pickUpStatus === 'Pending' ? <p className={`${styles.pickUpStatus} ${styles.pending}`}> <LuTimer /> {order.pickUpStatus} </p> : null}
