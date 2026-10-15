@@ -12,6 +12,8 @@ export default function AdminOrdersPage() {
     const { getAllOrders, ordersList, refetchOrders, cancelOrder } = orderServices()
     const [ selectedStatus, setSelectedStatus ] = useState('All')
     const [ sortOrder, setSortOrder ] = useState('newest')
+    const [ selectedMonth, setSelectedMonth ] = useState("all")
+    const [ selectedYear, setSelectedYear ] = useState("2026")
     const [ selectedDate, setSelectedDate ] = useState("")
     const [ valueToSearch, setValueToSearch ] = useState('')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
@@ -51,13 +53,14 @@ export default function AdminOrdersPage() {
 
         const checkDate = selectedDate === "" ? true : orderDate.getDate() === dateToCompare.getDate() && orderDate.getMonth() === dateToCompare.getMonth() && orderDate.getFullYear() === dateToCompare.getFullYear()
         
-        return checkStatus && checkValueToSearch && checkDate
+        // Verififcando ano e mês
+        const checkMonthAndYear = selectedMonth === "all" ? orderDate.getFullYear() === parseInt(selectedYear) : orderDate.getFullYear() === parseInt(selectedYear) && orderDate.getMonth() === parseInt(selectedMonth)
+
+        return checkStatus && checkValueToSearch && checkDate && checkMonthAndYear
     })
 
     const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
     [...filteredOrders].sort((a, b) => { return getOrderDate(a).getTime() - getOrderDate(b).getTime() }) 
-    
-    console.log(selectedDate)
     
     const handleClosePopup = () => {
         setOrderToCancel(null)
@@ -110,12 +113,57 @@ export default function AdminOrdersPage() {
                     </div>
 
                     <div className={styles.dateFilterContainer}>
-                        <div className={styles.dateFilter}><label htmlFor="">Date: </label> <input type="date" value={selectedDate}  onChange={(event) => setSelectedDate(event.target.value)}></input></div>
-                        <div className={styles.dateFilter}><label htmlFor="">Sort By: </label> 
-                        <select name="sortOrders" id="sortOrders" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
-                            <option value="newest">Newest First</option>    
-                            <option value="oldest">Oldest First</option>    
-                        </select></div>
+                        <div className={styles.dateFilter}>
+                            <label htmlFor="">Sort By: </label> 
+                            <select name="sortOrders" id="sortOrders" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+                                <option value="newest">Newest First</option>    
+                                <option value="oldest">Oldest First</option>    
+                            </select>
+                        </div>
+                        <div className={styles.dateFilter}>
+                            <label htmlFor="">Date: </label> 
+                            <input type="date" value={selectedDate}  onChange={(event) => {
+                                setSelectedDate(event.target.value)
+
+                                const selectedDateInfo = event.target.value.split("-")
+
+                                if (selectedDateInfo.length === 3) {
+                                    setSelectedMonth(selectedDateInfo[1] - 1)
+                                    if (parseInt(selectedDateInfo[0]) >= 2024) {
+                                        setSelectedYear(selectedDateInfo[0])
+                                    }
+                                }
+                                
+                            }}>
+                            </input>
+                        </div>
+                        <div className={styles.monthFilter}>
+                            <label htmlFor="">Month: </label> 
+                            <select name="selectedMonth" id="selectedMonth" value={selectedMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
+                                <option value="all">All</option>
+                                <option value="0">January</option>    
+                                <option value="1">February</option>
+                                <option value="2">March</option>    
+                                <option value="3">April</option>
+                                <option value="4">May</option>    
+                                <option value="5">June</option>
+                                <option value="6">July</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>    
+                                <option value="9">October</option>
+                                <option value="10">November</option>    
+                                <option value="11">December</option>    
+                            </select>
+                        </div>
+                        <div className={styles.monthFilter}>
+                            <label htmlFor="">Year: </label> 
+                            <select name="selectedYear" id="selectedYear" value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
+                                <option value="2026">2026</option>    
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>    
+                            </select>
+                        </div>
+                        
                     </div>
 
                     {sortedOrders.length === 0 ? 

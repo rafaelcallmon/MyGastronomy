@@ -111,9 +111,7 @@
     cursor: pointer;
 }
 
-.searchInput {
-    width: 450px;
-    height: 30px;
+.searchInput, .dateFilter input, .dateFilter select, .monthFilter select {
     border: none;
     border-radius: 5px;
     padding: 10px;
@@ -123,30 +121,21 @@
 
 .dateFilterContainer {
     display: flex;
-    gap: 0.3em;
+    gap: 0.5em;
     align-items: center;
 }
 
-.dateFilter {
-
+.searchInput {
+    height: 30px;
+    width: 450px;
 }
 
 .dateFilter input {
-    width: 250px;
     height: 30px;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: large;
-    color: #004643;
+    width: 150px;
 }
 
-.dateFilter select {
-    width: 250px;
+.dateFilter select, .monthFilter select {
     height: 50px;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: large;
-    color: #004643;
+    width: 200px;
 }
