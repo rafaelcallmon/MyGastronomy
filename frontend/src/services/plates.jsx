@@ -7,14 +7,15 @@ export default function platesServices() {
     
     const url = 'http://localhost:3000/plates'
 
-    const getAvailablePlates = () => {
+    const getAvailablePlates = (token) => {
         setPlatesLoading(true)
 
         fetch(`${url}/availables`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${token}`
             }
         })
         .then((response) => response.json())
@@ -35,5 +36,32 @@ export default function platesServices() {
 
     }
 
-    return { getAvailablePlates, platesLoading, refetchPlates, platesList }
+    const getAllPlates = (token) => {
+        setPlatesLoading(true)
+
+        fetch(`${url}`, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success) {
+                setPlatesList(result.body)
+            } else {
+                console.log(result);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            setPlatesLoading(false)
+            setRefetchPlates(false)
+        })
+    }
+
+    return { getAvailablePlates, getAllPlates, platesLoading, refetchPlates, platesList }
 }

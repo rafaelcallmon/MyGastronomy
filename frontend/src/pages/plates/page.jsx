@@ -29,7 +29,7 @@ export default function Plates() {
 
     useEffect(() => {
         if (refetchPlates) {
-            getAvailablePlates();
+            getAvailablePlates(authData?.token);
         }
     }, [refetchPlates]);
 
