@@ -13,7 +13,7 @@ export default function AdminOrdersPage() {
     const [ selectedStatus, setSelectedStatus ] = useState('All')
     const [ sortOrder, setSortOrder ] = useState('newest')
     const [ selectedMonth, setSelectedMonth ] = useState("all")
-    const [ selectedYear, setSelectedYear ] = useState("2026")
+    const [ selectedYear, setSelectedYear ] = useState("all")
     const [ selectedDate, setSelectedDate ] = useState("")
     const [ valueToSearch, setValueToSearch ] = useState('')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
@@ -40,6 +40,15 @@ export default function AdminOrdersPage() {
         return orderDate
     }
 
+    const resetAllFilters = () => {
+        setSelectedStatus("All")
+        setSortOrder('newest')
+        setSelectedMonth('all')
+        setSelectedYear('all')
+        setSelectedDate("")
+        setValueToSearch('')
+    }
+
     const filteredOrders = ordersList.filter(order => {
         const checkStatus = selectedStatus === 'All'? true : order.pickUpStatus === selectedStatus
         const checkValueToSearch = order.userDetails[0].fullname.toLowerCase().includes(valueToSearch.toLowerCase()) || order.userDetails[0].email.toLowerCase().includes(valueToSearch.toLowerCase()) 
@@ -54,9 +63,15 @@ export default function AdminOrdersPage() {
         const checkDate = selectedDate === "" ? true : orderDate.getDate() === dateToCompare.getDate() && orderDate.getMonth() === dateToCompare.getMonth() && orderDate.getFullYear() === dateToCompare.getFullYear()
         
         // Verififcando ano e mês
-        const checkMonthAndYear = selectedMonth === "all" ? orderDate.getFullYear() === parseInt(selectedYear) : orderDate.getFullYear() === parseInt(selectedYear) && orderDate.getMonth() === parseInt(selectedMonth)
+        const checkMonth = selectedMonth === "all" ? true : orderDate.getMonth() === parseInt(selectedMonth)
 
-        return checkStatus && checkValueToSearch && checkDate && checkMonthAndYear
+        const checkYear = selectedYear === "all" ? true : orderDate.getFullYear() === parseInt(selectedYear)
+
+        console.log(orderDate.getMonth())
+        console.log(parseInt(selectedMonth));
+        
+
+        return checkStatus && checkValueToSearch && checkDate && checkMonth && checkYear
     })
 
     const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
@@ -110,6 +125,7 @@ export default function AdminOrdersPage() {
                         <button onClick={() => setSelectedStatus('Completed')} className={`${styles.completedBtn} ${selectedStatus === 'Completed' ? styles.selected : ''}`}>Completed</button>
                         <button onClick={() => setSelectedStatus('Canceled')} className={`${styles.canceledBtn} ${selectedStatus === 'Canceled' ? styles.selected : ''}`}>Canceled</button>
                         <input className={styles.searchInput} type="text" placeholder="Search by name or email" value={valueToSearch} onChange={(event) => setValueToSearch(event.target.value)}/>
+                        <button onClick={() => setValueToSearch("")}>Clear</button>
                     </div>
 
                     <div className={styles.dateFilterContainer}>
@@ -158,11 +174,15 @@ export default function AdminOrdersPage() {
                         <div className={styles.monthFilter}>
                             <label htmlFor="">Year: </label> 
                             <select name="selectedYear" id="selectedYear" value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
+                                <option value="all">All</option>
                                 <option value="2026">2026</option>    
                                 <option value="2025">2025</option>
                                 <option value="2024">2024</option>    
                             </select>
                         </div>
+                        <button onClick={resetAllFilters}>
+                            Reset Filters
+                        </button>
                         
                     </div>
 

@@ -15,7 +15,7 @@ platesRouter.get('/', authMiddleware, adminMiddleware, async (req, res) => {
 })
 
 // Só os disponíveis
-platesRouter.get('/availables', async (req, res) => {
+platesRouter.get('/availables', authMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.getAvailablePlates()
 
     res.status(statusCode).send({ success, statusCode, body })
