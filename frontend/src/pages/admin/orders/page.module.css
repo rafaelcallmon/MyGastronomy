@@ -109,7 +109,7 @@
     font-size: 17px;
     background-color: rgb(155, 57, 57);
     cursor: pointer;
-    width: 30%;
+    width: 120px;
     height: 40px;
 }
 
@@ -145,10 +145,6 @@
     gap: 0.3em;
 }
 
-.dateFilter input, .dateFilter select {
-    
-}
-
 .dateFilter label {
     white-space: nowrap;
     flex-shrink: 0;
@@ -156,6 +152,12 @@
 
 .filterBtn {
     height: 40px;
+}
+
+@media screen and (max-width: 1100px) {
+    .ordersContainer {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 @media screen and (max-width: 600px) {

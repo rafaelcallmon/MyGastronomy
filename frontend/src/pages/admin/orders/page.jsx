@@ -148,20 +148,30 @@ export default function AdminOrdersPage() {
                         </div>
                         <div className={styles.dateFilter}>
                             <label htmlFor="">Date: </label> 
-                            <input type="date" value={selectedDate}  onChange={(event) => {
-                                setSelectedDate(event.target.value)
+                            <DatePicker 
+                                selected={selectedDateObject}
+                                onChange={(date) => {
+                                    if (date) {
+                                        const year = date.getFullYear()
+                                        const month = String(date.getMonth() + 1).padStart(2, '0')
+                                        const day = String(date.getDate()).padStart(2, '0')
 
-                                const selectedDateInfo = event.target.value.split("-")
+                                        setSelectedDate(`${year}-${month}-${day}`)
+                                        setSelectedMonth(String(date.getMonth()))
 
-                                if (selectedDateInfo.length === 3) {
-                                    setSelectedMonth(selectedDateInfo[1] - 1)
-                                    if (parseInt(selectedDateInfo[0]) >= 2024) {
-                                        setSelectedYear(selectedDateInfo[0])
+                                        if (year >= 2024) {
+                                            setSelectedYear(String(year))
+                                        }
+                                    } else {
+                                        setSelectedDate('')
                                     }
-                                }
-                                
-                            }}>
-                            </input>
+                                }}
+                                dateFormat="dd/MM/yyyy"
+                                locale="pt-BR"
+                                placeholderText="Select a date"
+                                isClearable
+                                className={styles.datePickerInput}
+                            ></DatePicker>
                         </div>
                         <div className={styles.dateFilter}>
                             <label htmlFor="">Month: </label> 
