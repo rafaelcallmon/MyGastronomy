@@ -6,6 +6,12 @@ import { useEffect, useState } from "react"
 import styles from "./page.module.css"
 import { LuChevronDown, LuChevronUp, LuTrash } from "react-icons/lu";
 import ConfirmDeleteOrderPopup from "../../../components/confirmDeleteOrderPopup/confirmDeleteOrderPopup.jsx";
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { registerLocale } from 'react-datepicker'
+import { ptBR } from 'date-fns/locale/pt-BR'
+
+registerLocale('pt-BR', ptBR)
 
 export default function AdminOrdersPage() {
     const { logout } = useAuth()
@@ -15,6 +21,11 @@ export default function AdminOrdersPage() {
     const [ selectedMonth, setSelectedMonth ] = useState("all")
     const [ selectedYear, setSelectedYear ] = useState("all")
     const [ selectedDate, setSelectedDate ] = useState("")
+    const selectedDateObject = selectedDate ? new Date(
+        Number(selectedDate.split('-')[0]),
+        Number(selectedDate.split('-')[1] - 1),
+        Number(selectedDate.split('-')[2])
+    ) : null
     const [ valueToSearch, setValueToSearch ] = useState('')
     const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
     const [orderToCancel, setOrderToCancel] = useState(null)
@@ -67,15 +78,14 @@ export default function AdminOrdersPage() {
 
         const checkYear = selectedYear === "all" ? true : orderDate.getFullYear() === parseInt(selectedYear)
 
-        console.log(orderDate.getMonth())
-        console.log(parseInt(selectedMonth));
-        
-
         return checkStatus && checkValueToSearch && checkDate && checkMonth && checkYear
     })
 
     const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
     [...filteredOrders].sort((a, b) => { return getOrderDate(a).getTime() - getOrderDate(b).getTime() }) 
+
+    console.log(selectedDate);
+    
     
     const handleClosePopup = () => {
         setOrderToCancel(null)
@@ -120,12 +130,12 @@ export default function AdminOrdersPage() {
             {ordersList.length > 0 ? 
                 <>
                     <div className={styles.filterContainer}>
-                        <button onClick={() => setSelectedStatus('All')} className={`${styles.allBtn} ${selectedStatus === 'All' ? styles.selected : ''}`}>All</button>
-                        <button onClick={() => setSelectedStatus('Pending')} className={`${styles.pendingBtn} ${selectedStatus === 'Pending' ? styles.selected : ''}`}>Pending</button>
-                        <button onClick={() => setSelectedStatus('Completed')} className={`${styles.completedBtn} ${selectedStatus === 'Completed' ? styles.selected : ''}`}>Completed</button>
-                        <button onClick={() => setSelectedStatus('Canceled')} className={`${styles.canceledBtn} ${selectedStatus === 'Canceled' ? styles.selected : ''}`}>Canceled</button>
+                        <button onClick={() => setSelectedStatus('All')} className={`${styles.allBtn} ${styles.filterBtn} ${selectedStatus === 'All' ? styles.selected : ''}`}>All</button>
+                        <button onClick={() => setSelectedStatus('Pending')} className={`${styles.pendingBtn} ${styles.filterBtn} ${selectedStatus === 'Pending' ? styles.selected : ''}`}>Pending</button>
+                        <button onClick={() => setSelectedStatus('Completed')} className={`${styles.completedBtn} ${styles.filterBtn} ${selectedStatus === 'Completed' ? styles.selected : ''}`}>Completed</button>
+                        <button onClick={() => setSelectedStatus('Canceled')} className={`${styles.canceledBtn} ${styles.filterBtn} ${selectedStatus === 'Canceled' ? styles.selected : ''}`}>Canceled</button>
                         <input className={styles.searchInput} type="text" placeholder="Search by name or email" value={valueToSearch} onChange={(event) => setValueToSearch(event.target.value)}/>
-                        <button onClick={() => setValueToSearch("")}>Clear</button>
+                        <button onClick={() => setValueToSearch("")} className={`${styles.clearBtn} ${styles.filterBtn}`}>Clear</button>
                     </div>
 
                     <div className={styles.dateFilterContainer}>
@@ -138,22 +148,32 @@ export default function AdminOrdersPage() {
                         </div>
                         <div className={styles.dateFilter}>
                             <label htmlFor="">Date: </label> 
-                            <input type="date" value={selectedDate}  onChange={(event) => {
-                                setSelectedDate(event.target.value)
+                            <DatePicker 
+                                selected={selectedDateObject}
+                                onChange={(date) => {
+                                    if (date) {
+                                        const year = date.getFullYear()
+                                        const month = String(date.getMonth() + 1).padStart(2, '0')
+                                        const day = String(date.getDate()).padStart(2, '0')
 
-                                const selectedDateInfo = event.target.value.split("-")
+                                        setSelectedDate(`${year}-${month}-${day}`)
+                                        setSelectedMonth(String(date.getMonth()))
 
-                                if (selectedDateInfo.length === 3) {
-                                    setSelectedMonth(selectedDateInfo[1] - 1)
-                                    if (parseInt(selectedDateInfo[0]) >= 2024) {
-                                        setSelectedYear(selectedDateInfo[0])
+                                        if (year >= 2024) {
+                                            setSelectedYear(String(year))
+                                        }
+                                    } else {
+                                        setSelectedDate('')
                                     }
-                                }
-                                
-                            }}>
-                            </input>
+                                }}
+                                dateFormat="dd/MM/yyyy"
+                                locale="pt-BR"
+                                placeholderText="Select a date"
+                                isClearable
+                                className={styles.datePickerInput}
+                            ></DatePicker>
                         </div>
-                        <div className={styles.monthFilter}>
+                        <div className={styles.dateFilter}>
                             <label htmlFor="">Month: </label> 
                             <select name="selectedMonth" id="selectedMonth" value={selectedMonth} onChange={(event) => setSelectedMonth(event.target.value)}>
                                 <option value="all">All</option>
@@ -171,7 +191,7 @@ export default function AdminOrdersPage() {
                                 <option value="11">December</option>    
                             </select>
                         </div>
-                        <div className={styles.monthFilter}>
+                        <div className={styles.dateFilter}>
                             <label htmlFor="">Year: </label> 
                             <select name="selectedYear" id="selectedYear" value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
                                 <option value="all">All</option>
@@ -180,7 +200,7 @@ export default function AdminOrdersPage() {
                                 <option value="2024">2024</option>    
                             </select>
                         </div>
-                        <button onClick={resetAllFilters}>
+                        <button onClick={resetAllFilters} className={`${styles.resetBtn} ${styles.filterBtn}`}>
                             Reset Filters
                         </button>
                         
@@ -197,9 +217,9 @@ export default function AdminOrdersPage() {
                         {sortedOrders.map((order) => (
                             <div key={order._id} className={styles.orderCard}>
                                 <div className={styles.orderHeadContainer}>
-                                    {order.pickUpStatus === 'Pending' ? <p className={`${styles.pickUpStatus} ${styles.pending}`}> <LuTimer /> {order.pickUpStatus} </p> : null}
-                                    {order.pickUpStatus === 'Completed' ? <p className={`${styles.pickUpStatus} ${styles.completed}`}> <LuCircleCheck /> {order.pickUpStatus} </p> : null}
-                                    {order.pickUpStatus === 'Canceled' ? <p className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</p> : null}
+                                    {order.pickUpStatus === 'Pending' ? <div className={`${styles.pickUpStatus} ${styles.pending}`}> <LuTimer /> {order.pickUpStatus} </div> : null}
+                                    {order.pickUpStatus === 'Completed' ? <div className={`${styles.pickUpStatus} ${styles.completed}`}> <LuCircleCheck /> {order.pickUpStatus} </div> : null}
+                                    {order.pickUpStatus === 'Canceled' ? <div className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</div> : null}
 
                                     <div>User: {order.userDetails[0].email}</div>
                                 </div>
@@ -225,7 +245,7 @@ export default function AdminOrdersPage() {
                                 )}
                                 <div>Total: $ {order.total.toFixed(2)}</div>
                                 {order.pickUpStatus === 'Pending' && (
-                                    <button className={styles.cancelOrderBtn} onClick={() => {setOrderToCancel(order)}}><LuTrash/> Cancel order</button>
+                                    <button className={styles.cancelOrderBtn} onClick={() => {setOrderToCancel(order)}}><LuTrash/> Cancel </button>
                                 )}
                             </div>
                         ))}
