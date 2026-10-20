@@ -1,0 +1,51 @@
+.pageContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.platesContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 40px;
+    gap: 1em;
+    row-gap: 30px;
+    margin-bottom: 40px;
+}
+
+.searchBar {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.searchInput {
+    border: none;
+    border-radius: 5px;
+    height: 25px;
+    width: 40%;
+    padding: 10px;
+}
+
+button {
+    height: 45px;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.platesBtnsContainer {
+    display: flex;
+    gap: 0.2em;
+}
+
+.deleteBtn {
+    background-color: rgb(155, 57, 57);
+}

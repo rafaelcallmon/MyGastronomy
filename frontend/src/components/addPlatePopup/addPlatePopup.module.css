@@ -1,0 +1,17 @@
+.popupContainer {
+    background-color: #faf0ca;
+    color: #004643;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+
+.fieldContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.textField {
+    width: 100%;
+}
