@@ -41,10 +41,10 @@
 }
 
 .pickUpStatus {
-    border-radius: 0.5em;
+    border-radius: 0.3em;
     width: fit-content;
-    padding: 0.3em;
-    font-size: large;
+    padding: 6px;
+    font-size: medium;
     display: flex;
     align-items: center;
     gap: 0.2em;
@@ -109,33 +109,115 @@
     font-size: 17px;
     background-color: rgb(155, 57, 57);
     cursor: pointer;
+    width: 30%;
+    height: 40px;
 }
 
-.searchInput, .dateFilter input, .dateFilter select, .monthFilter select {
+.searchInput, .dateFilter input, .dateFilter select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
     border: none;
     border-radius: 5px;
     padding: 10px;
-    font-size: large;
+    font-size: 1rem;
     color: #004643;
+    height: 40px;
+}
+
+.searchInput {
+    width: 30%;
+    height: 40px;
 }
 
 .dateFilterContainer {
     display: flex;
     gap: 0.5em;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-.searchInput {
-    height: 30px;
-    width: 450px;
+
+.dateFilter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3em;
 }
 
-.dateFilter input {
-    height: 30px;
-    width: 150px;
+.dateFilter input, .dateFilter select {
+    
 }
 
-.dateFilter select, .monthFilter select {
-    height: 50px;
-    width: 200px;
+.dateFilter label {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filterBtn {
+    height: 40px;
+}
+
+@media screen and (max-width: 600px) {
+    .pageContainer {
+        padding: 0.75rem;
+        gap: 1rem;
+        min-width: 0;
+        font-size: medium;
+    }
+
+    .filterContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    .searchInput {
+        width: 70%;
+        height: 40px;
+    }
+
+    .dateFilterContainer {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+        align-items: end;
+    }
+
+    .dateFilter {
+        min-width: 0;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .resetBtn {
+        width: 170px;
+        min-height: 40px;
+        grid-column: 1 / -1;
+        justify-self: center;
+    }
+
+    .ordersContainer {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .orderCard {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        padding: 1em;
+    }
+
+    .orderHeadContainer {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .orderItemsContainer {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cancelOrderBtn {
+        width: 40%;
+    }
 }
