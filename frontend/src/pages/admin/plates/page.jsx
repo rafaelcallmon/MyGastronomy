@@ -8,7 +8,7 @@ import AdminPlateCard from "../../../components/adminPlateCard/adminPlateCard.js
 import AddPlatePopup from "../../../components/addPlatePopup/addPlatePopup.jsx";
 
 export default function AdminPlatesPage() {
-    const { getAvailablePlates, platesList, getAllPlates, refetchPlates } = platesServices()
+    const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates } = platesServices()
     const [ addPlatePopupOpen, setAddPlatePopupOpen ] = useState(false)
     const authData = JSON.parse(localStorage.getItem('auth'))
 
@@ -31,14 +31,12 @@ export default function AdminPlatesPage() {
 
         setAddPlatePopupOpen(!addPlatePopupOpen)
     }
-
-    console.log(addPlatePopupOpen);
     
 
     return (
         <>
             <div className={styles.pageContainer}>
-                <h1>Plates Admin Panel</h1>
+                <h1>Plates Panel</h1>
 
                 <div className={styles.searchBar}>
                     <input className={styles.searchInput} type="text" name="" id="" placeholder="Search plate by name"/>

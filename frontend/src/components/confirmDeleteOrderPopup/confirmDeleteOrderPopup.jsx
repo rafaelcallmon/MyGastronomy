@@ -11,8 +11,8 @@ export default function ConfirmDeleteOrderPopup ({onClose, order, onConfirm}) {
     return (
         <Dialog open={true} onClose={onClose}>
             <div className={styles.popupContainer}>
-                <div><b>Confirm the deletion of the order?</b></div>
-                <button className={styles.confirmDeleteBtn} onClick={handleConfirm}>Delete</button>
+                <div><b>Confirm the cancelation of the order?</b></div>
+                <button className={styles.confirmDeleteBtn} onClick={handleConfirm}>Cancel</button>
             </div>
         </Dialog>
     )

@@ -63,5 +63,29 @@ export default function platesServices() {
         })
     }
 
-    return { getAvailablePlates, getAllPlates, platesLoading, refetchPlates, platesList }
+    const addPlate = (plateData, token) => {
+        console.log('5. Entrei no service addPlate');
+
+        fetch(`${url}`, {
+            method: 'POST',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(plateData)
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        .finally(() => {
+            
+        })
+    }
+
+    return { getAvailablePlates, getAllPlates, addPlate, platesLoading, refetchPlates, platesList }
 }

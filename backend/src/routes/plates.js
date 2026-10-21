@@ -21,8 +21,14 @@ platesRouter.get('/availables', authMiddleware, async (req, res) => {
     res.status(statusCode).send({ success, statusCode, body })
 })
 
-// Adicionar vários pratos
 platesRouter.post('/', authMiddleware, adminMiddleware, async (req, res) => {
+    const { success, statusCode, body } = await platesControllers.addPlate(req.body)
+
+    res.status(statusCode).send({ success, statusCode, body})
+})
+
+// Adicionar vários pratos
+platesRouter.post('/multiples', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.addMultiplePlates(req.body)
 
     res.status(statusCode).send({ success, statusCode, body})

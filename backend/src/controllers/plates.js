@@ -26,6 +26,17 @@ export default class PlatesControllers {
         }
     }
 
+    async addPlate(plateData) {
+        try {
+            const result = await this.dataAccess.addPlate(plateData)
+
+
+            return ok(result)
+        } catch (error) {
+            return serverError(error)
+        }
+    }
+
     async addMultiplePlates(plateDataList) {
         try {
             const result = await this.dataAccess.addMultiplePlates(plateDataList)

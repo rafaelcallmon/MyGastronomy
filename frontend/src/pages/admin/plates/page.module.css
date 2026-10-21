@@ -49,3 +49,18 @@ button {
 .deleteBtn {
     background-color: rgb(155, 57, 57);
 }
+
+@media screen and (max-width: 1000px) {
+    .platesContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .platesContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .pageContainer {
+        text-align: center;
+    }
+}

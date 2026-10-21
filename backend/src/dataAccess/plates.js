@@ -27,6 +27,8 @@ export default class PlatesDataAccess {
         .collection(collectionName)
         .insertOne(plateData)
 
+        console.log("Resultado do MongoDB:", result);
+
         return result
     }
 
