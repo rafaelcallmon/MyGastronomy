@@ -105,6 +105,10 @@ export default function platesServices() {
             console.log(error);
             throw error
         })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
 
     }
 
@@ -125,7 +129,11 @@ export default function platesServices() {
             console.log(error);
             throw error
         })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
     }
 
-    return { getAvailablePlates, getAllPlates, addPlate, platesLoading, refetchPlates, platesList }
+    return { getAvailablePlates, getAllPlates, addPlate, updatePlate, deletePlate, platesLoading, refetchPlates, platesList }
 }
