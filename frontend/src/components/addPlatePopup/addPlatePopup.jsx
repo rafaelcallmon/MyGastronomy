@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import styles from "./addPlatePopup.module.css"
 import platesServices from "../../services/plates";
+import ToastMessage from "../toastMessage/toastMessage.jsx"
 
 export default function AddPlatePopup({open, onClose}) {
     const ESTADO_INICIAL = {
@@ -19,6 +20,11 @@ export default function AddPlatePopup({open, onClose}) {
     const [ingredients, setIngredients] = useState(['']);
     const [urlImagemValida, setUrlImagemValida] = useState(null);
     const { addPlate } = platesServices()
+    const [toast, setToast] = useState({
+        visible: false,
+        message: "",
+        type: 'success'
+    })
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     const handleClose = (e) => {
@@ -68,19 +74,60 @@ export default function AddPlatePopup({open, onClose}) {
         }
     }
 
-    const handleSubmit = (e) => {
+    const hideToast = () => {
+        setToast((prev) => ({
+            ...prev,
+            visible: false,
+        }))
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const dadosLimpos = {
-        ...formData,
-        name: formData.name.trim(),
-        category: formData.category.trim(),
-        description: formData.description.trim(),
-        imgUrl: formData.imgUrl.trim(),
-        ingredients: ingredients.map(ingredient => ingredient.trim())
-        };
+        try {
+            const dadosLimpos = {
+            ...formData,
+            name: formData.name.trim(),
+            category: formData.category.trim(),
+            description: formData.description.trim(),
+            imgUrl: formData.imgUrl.trim(),
+            ingredients: ingredients.map(ingredient => ingredient.trim())
+            };
 
-        addPlate(dadosLimpos, authData?.token)
+            if (!urlImagemValida) {
+                throw new Error("URL de imagem inválida");
+                
+            }
+            
+
+            const result = await addPlate(dadosLimpos, authData?.token)
+
+            console.log("Resposta:", result);
+            console.log("Sucesso?", result.success);
+
+            if (!result.success) {
+                throw new Error(result.body)
+            }
+
+            console.log("Atualizando toast para sucesso");
+
+            setToast({
+                visible: true,
+                message: `Prato "${dadosLimpos.name}" cadastrado com sucesso`,
+                type: "success"
+            })
+
+            onClose(e)
+            
+        } catch (error) {
+            console.error("Erro no cadastro:", error);
+            
+            setToast({
+                visible: true,
+                message: error.message || "Ocorreu um erro",
+                type: "error"
+            })
+        }
         
     }
 
@@ -171,7 +218,7 @@ export default function AddPlatePopup({open, onClose}) {
                                 </TextField>
                             </div>
                             <TextField onChange={handleFormatDataChange} className={styles.textField} label="Description" multiline rows={3} name="description" required type="text"></TextField>
-                            <label htmlFor="">Ingredientes:</label>
+                            <label htmlFor="">Ingredients:</label>
                             <div className={styles.ingredientsContainer}>
                                 {ingredients.map((ingredient, index) => (
                                     <div key={index}>
@@ -190,8 +237,22 @@ export default function AddPlatePopup({open, onClose}) {
                             <button type="submit">Submit</button>
                         </form>
                     </div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setToast({
+                                visible: true,
+                                message: "Teste de notificação!",
+                                type: "success"
+                            })
+                        }}
+                    >
+                        Testar Toast
+                    </button>
                 </div>
             </Dialog>
+
+            <ToastMessage visible={toast.visible} onHide={hideToast} message={toast.message} type={toast.type}></ToastMessage>
         </>
     )
 }

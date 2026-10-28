@@ -30,6 +30,7 @@ export default function AdminPlatesPage() {
         e.preventDefault()
 
         setAddPlatePopupOpen(!addPlatePopupOpen)
+        getAllPlates(authData?.token)
     }
     
 
