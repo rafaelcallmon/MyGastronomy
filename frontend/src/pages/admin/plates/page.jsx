@@ -17,6 +17,7 @@ export default function AdminPlatesPage() {
     const [ plateSelected, setPlateSelected ] = useState(null)
     const [ plateToDelete, setPlateToDelete ] = useState(null)
     const [ plateToUpdate, setPlateToUpdate ] = useState(null)
+    const [ nameToSearch, setNameToSearch ] = useState('')
     const [toast, setToast] = useState({
             visible: false,
             message: "",
@@ -37,6 +38,12 @@ export default function AdminPlatesPage() {
     if (!platesList) {
         return ( <Loading></Loading> )
     }
+
+    const filteredPlates = platesList.filter(plate => {
+        const checkName = plate.name.toLowerCase().includes(nameToSearch.toLowerCase())
+
+        return checkName
+    })
 
     const hideToast = () => {
         setToast((prev) => ({
@@ -81,9 +88,6 @@ export default function AdminPlatesPage() {
         });
     };
     
-    const handleEditPlatePopupClose = (e) => {
-        e.preventDefault()
-    }
 
     const handlePlateUpdated = (plateName) => {
         getAllPlates(authData?.token)
@@ -110,13 +114,14 @@ export default function AdminPlatesPage() {
                 <h1>Plates Panel</h1>
 
                 <div className={styles.searchBar}>
-                    <input className={styles.searchInput} type="text" name="" id="" placeholder="Search plate by name"/>
+                    <input className={styles.searchInput} type="text" name="" value={nameToSearch} onChange={(e) => {setNameToSearch(e.target.value); console.log(nameToSearch);
+                    }} id="" placeholder="Search plate by name"/>
                     <button className={styles.addBtn} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
                 </div>
 
                 <div className={styles.platesContainer}>
                     {
-                        platesList.map((plate) => (
+                        filteredPlates.map((plate) => (
                             <div key={plate._id} className={styles.cardContainer} onClick={() => {setPlateSelected(plate)}}>
                                 <PlateCard plateData={plate}/>
                                 <div className={styles.platesBtnsContainer}>
