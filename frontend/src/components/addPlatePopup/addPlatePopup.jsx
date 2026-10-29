@@ -229,6 +229,7 @@ export default function AddPlatePopup({open, onClose}) {
                                     <button onClick={() => removeIngredientInput(ingredients.length - 1)} className={styles.removeIngredientBtn}>-</button>
                                 </div>
                             </div>
+                            <br />
                             <TextField onChange={handleFormatDataChange} className={styles.textField} label="Image Url" name="imgUrl" required type="text"></TextField>
                             <button type="submit">Submit</button>
                         </form>
