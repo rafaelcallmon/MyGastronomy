@@ -3,6 +3,7 @@ import styles from "./confirmDeletePlatePopup.module.css"
 import platesServices from "../../services/plates"
 import ToastMessage from "../toastMessage/toastMessage"
 import { useState } from "react"
+import AdminPlateCard from "../adminPlateCard/adminPlateCard"
 
 export default function ConfirmDeletePlatePopup ({onClose, onDeleted, onDeleteError, plate}) {
     const { deletePlate } = platesServices()
@@ -29,6 +30,7 @@ export default function ConfirmDeletePlatePopup ({onClose, onDeleted, onDeleteEr
             <Dialog open={true} onClose={onClose}>
                 <div className={styles.popupContainer}>
                     <div><b>Confirm the deletion of plate: "{plate.name}"?</b></div>
+                    <AdminPlateCard plateData={plate}></AdminPlateCard>
                     <button className={styles.confirmDeleteBtn} onClick={handleConfirm}>Delete</button>
                 </div>
             </Dialog>

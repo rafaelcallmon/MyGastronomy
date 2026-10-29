@@ -37,6 +37,10 @@ img {
     text-align: right;
 }
 
+.name1, .name2 {
+    text-align: right;
+}
+
 .price2, .name2 {
     display: none;
 }

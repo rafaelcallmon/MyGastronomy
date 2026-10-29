@@ -98,18 +98,12 @@ export default function AddPlatePopup({open, onClose}) {
                 throw new Error("URL de imagem inválida");
                 
             }
-            
 
             const result = await addPlate(dadosLimpos, authData?.token)
-
-            console.log("Resposta:", result);
-            console.log("Sucesso?", result.success);
 
             if (!result.success) {
                 throw new Error(result.body)
             }
-
-            console.log("Atualizando toast para sucesso");
 
             setToast({
                 visible: true,
@@ -117,7 +111,7 @@ export default function AddPlatePopup({open, onClose}) {
                 type: "success"
             })
 
-            onClose(e)
+            handleClose(e)
             
         } catch (error) {
             console.error("Erro no cadastro:", error);
@@ -175,9 +169,11 @@ export default function AddPlatePopup({open, onClose}) {
             <Dialog open={open} onClose={handleClose} className={styles.popupDialog} maxWidth={false} 
                 sx={{ 
                         "& .MuiDialog-paper": {
-                        maxWidth: "1200px",
+                        width:"1000px",
+                        maxWidth: "90vw",
                         maxHeight: "90vh",
-                        overflowY: "auto"
+                        overflowY: "auto",
+                        boxSizing: "border-box"
                     }
                 }}>
                 <div className={styles.popupContainer}>
@@ -237,18 +233,6 @@ export default function AddPlatePopup({open, onClose}) {
                             <button type="submit">Submit</button>
                         </form>
                     </div>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setToast({
-                                visible: true,
-                                message: "Teste de notificação!",
-                                type: "success"
-                            })
-                        }}
-                    >
-                        Testar Toast
-                    </button>
                 </div>
             </Dialog>
 
