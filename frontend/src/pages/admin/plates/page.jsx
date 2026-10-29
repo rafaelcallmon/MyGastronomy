@@ -17,6 +17,8 @@ export default function AdminPlatesPage() {
     const [ plateSelected, setPlateSelected ] = useState(null)
     const [ plateToDelete, setPlateToDelete ] = useState(null)
     const [ plateToUpdate, setPlateToUpdate ] = useState(null)
+    const [ selectedSort, setSelectedSort ] = useState("any")
+    const [ showAvailable, setShowAvailable ] = useState("all")
     const [ nameToSearch, setNameToSearch ] = useState('')
     const [toast, setToast] = useState({
             visible: false,
@@ -42,7 +44,17 @@ export default function AdminPlatesPage() {
     const filteredPlates = platesList.filter(plate => {
         const checkName = plate.name.toLowerCase().includes(nameToSearch.toLowerCase())
 
-        return checkName
+        const checkAvailable = showAvailable === "all"? true : showAvailable === "true" ? plate.available : !plate.available
+
+        return checkName && checkAvailable
+    })
+
+    const sortedPlates = [...filteredPlates].sort((a, b) => {
+        if (selectedSort === "highestPrice") {
+            return b.price - a.price
+        } else if (selectedSort === "lowestPrice") {
+            return a.price - b.price
+        }
     })
 
     const hideToast = () => {
@@ -113,29 +125,54 @@ export default function AdminPlatesPage() {
             <div className={styles.pageContainer}>
                 <h1>Plates Panel</h1>
 
-                <div className={styles.searchBar}>
-                    <input className={styles.searchInput} type="text" name="" value={nameToSearch} onChange={(e) => {setNameToSearch(e.target.value); console.log(nameToSearch);
-                    }} id="" placeholder="Search plate by name"/>
-                    <button className={styles.addBtn} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
-                </div>
+                <div className={styles.pageContent}>
+                    <div className={styles.searchBar}>
+                        <input className={styles.searchInput} type="text" name="" value={nameToSearch} onChange={(e) => {setNameToSearch(e.target.value); console.log(nameToSearch);
+                        }} id="" placeholder="Search plate by name"/>
+                        <button className={styles.addBtn} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
+                    </div>
 
-                <div className={styles.platesContainer}>
-                    {
-                        filteredPlates.map((plate) => (
-                            <div key={plate._id} className={styles.cardContainer} onClick={() => {setPlateSelected(plate)}}>
-                                <PlateCard plateData={plate}/>
-                                <div className={styles.platesBtnsContainer}>
-                                    <button className={styles.editBtn} onClick={() => {
-                                        setPlateToUpdate(plate)
-                                    }}><LuSquarePen/>Edit</button>
-                                    <button className={styles.deleteBtn} onClick={() => {
-                                        setPlateToDelete(plate)
-                                        handleDeletePlateOpen()
-                                    }}><LuTrash/>Delete</button>
+                    <div className={styles.filterContainer}>
+                        <div className={styles.filter}>
+                            <label htmlFor="">Sort by: </label>
+                            <select name="selectedSort" id="selectedSort" value={selectedSort} onChange={(e) => {setSelectedSort(e.target.value)
+                            }}>
+                                <option value="any">Any</option>
+                                <option value="highestPrice">Highet Price</option>
+                                <option value="lowestPrice">Lowest Price</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <label htmlFor="">Available: </label>
+                            <select name="showAvailable" id="showAvailable" value={showAvailable} onChange={(e) => {setShowAvailable(e.target.value); console.log(showAvailable);}}>
+                                <option value="all">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className={styles.platesContainer}>
+                        {
+                            sortedPlates.map((plate) => (
+                                <div key={plate._id} className={styles.cardContainer}>
+                                    <div onClick={() => {setPlateSelected(plate)}}>
+                                        <PlateCard plateData={plate}/>
+                                    </div>
+                                    <div className={styles.platesBtnsContainer}>
+                                        <button className={styles.editBtn} onClick={() => {
+                                            setPlateToUpdate(plate)
+                                        }}><LuSquarePen/>Edit</button>
+                                        <button className={styles.deleteBtn} onClick={() => {
+                                            setPlateToDelete(plate)
+                                            handleDeletePlateOpen()
+                                        }}><LuTrash/>Delete</button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
 

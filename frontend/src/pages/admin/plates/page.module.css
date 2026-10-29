@@ -6,10 +6,15 @@
     gap: 25px;
 }
 
+.pageContent {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
 .platesContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    margin-top: 40px;
     gap: 1em;
     row-gap: 30px;
     margin-bottom: 40px;
@@ -32,6 +37,36 @@
 
 button {
     height: 45px;
+}
+
+.filterContainer {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.filter select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #004643;
+    height: 40px;
+}
+
+.filter label {
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .cardContainer {

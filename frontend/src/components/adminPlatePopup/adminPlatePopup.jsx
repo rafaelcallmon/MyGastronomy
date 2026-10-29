@@ -9,6 +9,7 @@ export default function AdminPlatePopup ({ plateData, onClose}) {
                 <img src={plateData.imgUrl} alt="" />
                 <div className={styles.popupContent}>
                     <h2>{plateData.name}</h2>
+                    <p>Available: {plateData.available ? "Yes" : "No"} </p>
                     <p>{String(plateData.ingredients)}</p>
                     <p>{plateData.description}</p>
                     <h3>$ {plateData.price}</h3>
