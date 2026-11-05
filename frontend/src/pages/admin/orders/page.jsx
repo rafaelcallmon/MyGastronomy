@@ -10,6 +10,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { registerLocale } from 'react-datepicker'
 import { ptBR } from 'date-fns/locale/pt-BR'
+import AdminOrderCard from "../../../components/adminOrderCard/adminOrderCard.jsx";
 
 registerLocale('pt-BR', ptBR)
 
@@ -27,8 +28,6 @@ export default function AdminOrdersPage() {
         Number(selectedDate.split('-')[2])
     ) : null
     const [ valueToSearch, setValueToSearch ] = useState('')
-    const [ expandedOrderItemsList, setexpandedOrderItemsList] = useState([])
-    const [orderToCancel, setOrderToCancel] = useState(null)
     const authData = JSON.parse(localStorage.getItem('auth'))
 
     useEffect(() => {
@@ -84,38 +83,13 @@ export default function AdminOrdersPage() {
     const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
     [...filteredOrders].sort((a, b) => { return getOrderDate(a).getTime() - getOrderDate(b).getTime() }) 
 
-    console.log(selectedDate);
-    
-    
-    const handleClosePopup = () => {
-        setOrderToCancel(null)
-    }
 
-    const handleConfirmCancel = (orderId) => {
-        // BOTAR AWAIT
-        cancelOrder(orderId, authData?.token)
-        setOrderToCancel(null)
+    const handleConfirmCancel = async (orderId) => {
+        await cancelOrder(orderId, authData?.token)
     }
 
     const handleLogout = () => {
         logout()
-    }
-
-    const handleExpandOrder = (orderId) => {
-        setexpandedOrderItemsList((currentOrdersIds) => {
-            const checkOrderId = currentOrdersIds.find((id) => {
-                return id === orderId
-            })
-
-            if (checkOrderId) {
-                return currentOrdersIds.filter((id) => id !== orderId)
-            }
-
-            return [
-                ...currentOrdersIds,
-                orderId
-            ]
-        })
     }
 
         return (
@@ -215,39 +189,7 @@ export default function AdminOrdersPage() {
 
                     <div className={styles.ordersContainer}>
                         {sortedOrders.map((order) => (
-                            <div key={order._id} className={styles.orderCard}>
-                                <div className={styles.orderHeadContainer}>
-                                    {order.pickUpStatus === 'Pending' ? <div className={`${styles.pickUpStatus} ${styles.pending}`}> <LuTimer /> {order.pickUpStatus} </div> : null}
-                                    {order.pickUpStatus === 'Completed' ? <div className={`${styles.pickUpStatus} ${styles.completed}`}> <LuCircleCheck /> {order.pickUpStatus} </div> : null}
-                                    {order.pickUpStatus === 'Canceled' ? <div className={`${styles.pickUpStatus} ${styles.canceled}`}> <LuCircleAlert /> {order.pickUpStatus}</div> : null}
-
-                                    <div>User: {order.userDetails[0].email}</div>
-                                </div>
-                                <div className={styles.userDetailsContainer}>
-                                    <div>Name: {order.userDetails[0].fullname}</div>
-                                    <div>PickupTime: {order.pickupTime}</div>   
-                                </div>
-                                <div className={styles.itemsHeaders} onClick={() => {handleExpandOrder(order._id)}}>
-                                    { expandedOrderItemsList.find((id) => {return id === order._id}) ? <LuChevronUp/> : <LuChevronDown/> }
-                                    <div>Items:</div>
-                                </div>
-                                {expandedOrderItemsList.find((id) => {return id === order._id}) && (
-                                    <div className={styles.orderItemsContainer}>
-                                        {order.orderItems.map((item) => (
-                                            <div key={item._id} className={styles.orderCardItem}>
-                                                <div>{item.itemDetails[0].name}</div>
-                                                <div>Price: $ {item.price.toFixed(2)}</div>
-                                                <div>Quantity: {item.quantity}</div>
-                                                <div>Subtotal: $ {item.subtotal.toFixed(2)}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                <div>Total: $ {order.total.toFixed(2)}</div>
-                                {order.pickUpStatus === 'Pending' && (
-                                    <button className={styles.cancelOrderBtn} onClick={() => {setOrderToCancel(order)}}><LuTrash/> Cancel </button>
-                                )}
-                            </div>
+                            <AdminOrderCard key={order._id} order={order} onCancel={handleConfirmCancel}/>
                         ))}
                     </div>
                         
@@ -260,10 +202,6 @@ export default function AdminOrdersPage() {
                     No orders registered yet.
                 </div>
             }
-
-            {orderToCancel && (
-                <ConfirmDeleteOrderPopup onClose={handleClosePopup} onConfirm={() => {handleConfirmCancel(orderToCancel._id)}}></ConfirmDeleteOrderPopup>
-            )}
 
         </div>
     )

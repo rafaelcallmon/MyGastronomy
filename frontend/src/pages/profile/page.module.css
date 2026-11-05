@@ -15,6 +15,7 @@
     gap: 0.5em;
     break-inside: avoid;
     margin-bottom: 0.5em;
+    position: relative;
 }
 
 .noOrderCard {
@@ -57,7 +58,7 @@
     background-color: rgb(43, 116, 23);
 }
 
-.canceled, .canceledBtn, .cancelOrderBtn {
+.canceled, .canceledBtn {
     background-color: rgb(155, 57, 57);
 }
 
@@ -79,6 +80,9 @@
     align-self: flex-end;
     font-size: 17px;
     cursor: pointer;
+    background-color: rgb(155, 57, 57);
+    position: absolute;
+    bottom: 20px;
 }
 
 .orderItemsContainer {
