@@ -1,0 +1,59 @@
+.orderCard {
+    background-color: #004643;
+    color: #faf0ca;
+    padding: 1em;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    break-inside: avoid;
+    margin-bottom: 0.5em;
+    position: relative;
+}
+
+.pickUpStatus {
+    border-radius: 0.3em;
+    width: fit-content;
+    padding: 6px;
+    font-size: medium;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+}
+
+.pending, .pendingBtn {
+    background-color: rgb(173, 154, 10);
+}
+
+.completed, .completedBtn {
+    background-color: rgb(43, 116, 23);
+}
+
+.canceled, .canceledBtn {
+    background-color: rgb(155, 57, 57);
+}
+
+.cancelOrderBtn {
+    background-color: rgb(155, 57, 57);
+    align-self: flex-end;
+    font-size: 17px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    width: 120px;
+    height: 40px;
+}
+
+.orderItemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-left: 1em;
+}
+
+.itemsHeaders {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+    cursor: pointer;
+}
