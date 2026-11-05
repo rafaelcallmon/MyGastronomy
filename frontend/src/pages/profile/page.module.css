@@ -37,12 +37,6 @@
     align-items: start; 
 }
 
-@media screen and (max-width: 800px) {
-    .ordersContainer {
-        grid-template-columns: repeat(1, 1fr);
-    }
-}
-
 .pickUpStatus {
     border-radius: 0.5em;
     width: fit-content;
@@ -70,6 +64,7 @@
 .filterContainer {
     display: flex;
     gap: 0.5em;
+    flex-wrap: wrap;
 }
 
 .selected {
@@ -97,4 +92,51 @@
     align-items: center;
     gap: 0.2em;
     cursor: pointer;
+}
+
+.searchInput, .dateFilter input, .dateFilter select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #004643;
+    height: 40px;
+}
+
+.searchInput {
+    width: 30%;
+    height: 40px;
+}
+
+.dateFilterContainer {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.dateFilter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3em;
+}
+
+.dateFilter label {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filterBtn {
+    height: 40px;
+}
+
+@media screen and (max-width: 800px) {
+    .ordersContainer {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

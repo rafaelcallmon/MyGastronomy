@@ -60,8 +60,10 @@ export default function AdminOrdersPage() {
     }
 
     const filteredOrders = ordersList.filter(order => {
+        const searchValue = valueToSearch.toLowerCase().trim()
+
         const checkStatus = selectedStatus === 'All'? true : order.pickUpStatus === selectedStatus
-        const checkValueToSearch = order.userDetails[0].fullname.toLowerCase().includes(valueToSearch.toLowerCase()) || order.userDetails[0].email.toLowerCase().includes(valueToSearch.toLowerCase()) 
+        const checkValueToSearch = order.userDetails[0].fullname.toLowerCase().includes(searchValue) || order.userDetails[0].email.toLowerCase().includes(searchValue) || order.orderItems.some(item => item.itemDetails[0].name.toLowerCase().includes(searchValue))
 
         // Verificando data
         const orderDate = getOrderDate(order)
@@ -80,8 +82,20 @@ export default function AdminOrdersPage() {
         return checkStatus && checkValueToSearch && checkDate && checkMonth && checkYear
     })
 
-    const sortedOrders = sortOrder === "newest" ? [...filteredOrders].sort((a, b) => { return getOrderDate(b).getTime() - getOrderDate(a).getTime() }) : 
-    [...filteredOrders].sort((a, b) => { return getOrderDate(a).getTime() - getOrderDate(b).getTime() }) 
+    console.log(filteredOrders);
+    
+
+    const sortedOrders = [...filteredOrders].sort((a, b) => {
+        if (sortOrder === "newest") {
+            return getOrderDate(b).getTime() - getOrderDate(a).getTime()
+        } else if (sortOrder === "oldest") {
+            return getOrderDate(a).getTime() - getOrderDate(b).getTime()
+        } else if (sortOrder === "lowest") {
+            return a.total - b.total
+        } else if (sortOrder === "highest") {
+            return b.total - a.total
+        }
+    }) 
 
 
     const handleConfirmCancel = async (orderId) => {
@@ -117,7 +131,9 @@ export default function AdminOrdersPage() {
                             <label htmlFor="">Sort By: </label> 
                             <select name="sortOrders" id="sortOrders" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
                                 <option value="newest">Newest First</option>    
-                                <option value="oldest">Oldest First</option>    
+                                <option value="oldest">Oldest First</option>
+                                <option value="lowest">Lowest Total</option>
+                                <option value="highest">Highest Total</option>
                             </select>
                         </div>
                         <div className={styles.dateFilter}>
