@@ -13,6 +13,8 @@ import AdminPlatePopup from "../../../components/adminPlatePopup/adminPlatePopup
 
 export default function AdminPlatesPage() {
     const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates } = platesServices()
+    const [ isSelectionMode, setIsSelectionMode ] = useState(false)
+    const [ selectedPlatesList, setSelectedPlatesList ] = useState([])
     const [ addPlatePopupOpen, setAddPlatePopupOpen ] = useState(false)
     const [ plateSelected, setPlateSelected ] = useState(null)
     const [ plateToDelete, setPlateToDelete ] = useState(null)
@@ -120,6 +122,23 @@ export default function AdminPlatesPage() {
         })
     }
 
+    const cancelDeleteMany = () => {
+        setIsSelectionMode(false)
+        setSelectedPlatesList([])
+    }
+
+    const handlePlateSelected = (plate) => {
+        if (selectedPlatesList.some(plateItem => plateItem._id === plate._id)) {
+            const newList = selectedPlatesList.filter(plateItem => plateItem._id !== plate._id)
+            setSelectedPlatesList(newList)
+        } else (
+            setSelectedPlatesList([...selectedPlatesList, plate])
+        )
+    }
+
+    console.log(selectedPlatesList);
+    
+
     return (
         <>
             <div className={styles.pageContainer}>
@@ -153,14 +172,26 @@ export default function AdminPlatesPage() {
                         </div>
                     </div>
 
+                    <div className={styles.selectionBtnsContainer}>
+                        { isSelectionMode ? (
+                            <>
+                                <div><b>Delete many selection active, click on the plates you wish to delete</b></div>
+                                <button className={styles.deleteConfirmBtn}>Confirm</button>
+                                <button className={styles.deleteCancelBtn} onClick={cancelDeleteMany}>Cancel</button>
+                            </>
+                        ) : (
+                            <button className={styles.deleteManyBtn} onClick={() => setIsSelectionMode(true)}><LuTrash/>Delete Many</button>
+                        ) }
+                    </div>
+
                     <div className={styles.platesContainer}>
                         {
                             sortedPlates.map((plate) => (
                                 <div key={plate._id} className={styles.cardContainer}>
-                                    <div onClick={() => {setPlateSelected(plate)}}>
-                                        <PlateCard plateData={plate}/>
+                                    <div onClick={isSelectionMode ? () => handlePlateSelected(plate) : () => {setPlateSelected(plate)}} className={`${styles.plateCardDiv} ${selectedPlatesList.some(plateItem => plateItem._id === plate._id) ? styles.deleteSelected : null}`}>
+                                        <PlateCard plateData={plate} isSelected={selectedPlatesList.some(plateItem => plateItem._id === plate._id) ? true : false}/>
                                     </div>
-                                    <div className={styles.platesBtnsContainer}>
+                                    <div className={`${styles.platesBtnsContainer} ${isSelectionMode ? styles.hide : ""}`}>
                                         <button className={styles.editBtn} onClick={() => {
                                             setPlateToUpdate(plate)
                                         }}><LuSquarePen/>Edit</button>

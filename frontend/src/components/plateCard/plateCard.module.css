@@ -1,8 +1,14 @@
-img {
+.cardContainer img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 0.5em;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+}
+
+.selected {
+    border: solid 0.3em red
 }
 
 .cardContainer {

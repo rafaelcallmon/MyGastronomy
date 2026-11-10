@@ -1,10 +1,10 @@
 import styles from "./plateCard.module.css"
 
-export default function PlateCard({ plateData }) {
+export default function PlateCard({ plateData, isSelected}) {
     return (
         <>
             <div className={styles.cardContainer}>
-                <img src={plateData.imgUrl} alt="" />
+                <img src={plateData.imgUrl} alt="" className={`${isSelected ? styles.selected : null}`} />
                 <div className={styles.cardContent}>
                     <h4 className={styles.name1}>{plateData.name}</h4>
                     <h5 className={styles.name2}>{plateData.name}</h5>
