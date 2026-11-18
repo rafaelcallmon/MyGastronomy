@@ -10,12 +10,14 @@ import ConfirmDeletePlatePopup from "../../../components/confirmDeletePlatePopup
 import ToastMessage from "../../../components/toastMessage/toastMessage.jsx";
 import UpdatePlatePopup from "../../../components/updatePlatePopup/updatePlatePopup.jsx";
 import AdminPlatePopup from "../../../components/adminPlatePopup/adminPlatePopup.jsx";
+import ConfirmDeleteManyPopup from "../../../components/confirmDeleteManyPopup/confirmDeleteManyPopup.jsx";
 
 export default function AdminPlatesPage() {
     const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates } = platesServices()
     const [ isSelectionMode, setIsSelectionMode ] = useState(false)
-    const [ selectedPlatesList, setSelectedPlatesList ] = useState([])
+    const [ platesToDeleteList, setPlatesToDeleteList ] = useState([])
     const [ addPlatePopupOpen, setAddPlatePopupOpen ] = useState(false)
+    const [ deleteManyPopupOpen, setDeleteManyPopupOpen ] = useState(false)
     const [ plateSelected, setPlateSelected ] = useState(null)
     const [ plateToDelete, setPlateToDelete ] = useState(null)
     const [ plateToUpdate, setPlateToUpdate ] = useState(null)
@@ -79,10 +81,6 @@ export default function AdminPlatesPage() {
         getAllPlates(authData?.token)
     }
 
-    const handleDeletePlatePopupClose = () => {
-        setPlateToDelete(null)
-    }
-
     const handlePlateDeleted = (plateName) => {
         getAllPlates(authData?.token)
         setPlateToDelete(null)
@@ -97,7 +95,7 @@ export default function AdminPlatesPage() {
     const handleDeleteError = (message) => {
         setToast({
             visible: true,
-            message: message || "Não foi possível excluir o prato.",
+            message: message || "Could not delete plate",
             type: "error"
         });
     };
@@ -124,19 +122,31 @@ export default function AdminPlatesPage() {
 
     const cancelDeleteMany = () => {
         setIsSelectionMode(false)
-        setSelectedPlatesList([])
+        setPlatesToDeleteList([])
+    }
+
+    const handleOpenDeleteManyPopup = () => {
+        if (platesToDeleteList.length > 0) {
+            setDeleteManyPopupOpen(true)
+        } else {
+            setToast({
+                visible: true,
+                message: "No plate selected",
+                type: "error"
+            })
+        }
     }
 
     const handlePlateSelected = (plate) => {
-        if (selectedPlatesList.some(plateItem => plateItem._id === plate._id)) {
-            const newList = selectedPlatesList.filter(plateItem => plateItem._id !== plate._id)
-            setSelectedPlatesList(newList)
+        if (platesToDeleteList.some(plateItem => plateItem._id === plate._id)) {
+            const newList = platesToDeleteList.filter(plateItem => plateItem._id !== plate._id)
+            setPlatesToDeleteList(newList)
         } else (
-            setSelectedPlatesList([...selectedPlatesList, plate])
+            setPlatesToDeleteList([...platesToDeleteList, plate])
         )
     }
 
-    console.log(selectedPlatesList);
+    console.log(platesToDeleteList);
     
 
     return (
@@ -148,7 +158,7 @@ export default function AdminPlatesPage() {
                     <div className={styles.searchBar}>
                         <input className={styles.searchInput} type="text" name="" value={nameToSearch} onChange={(e) => {setNameToSearch(e.target.value); console.log(nameToSearch);
                         }} id="" placeholder="Search plate by name"/>
-                        <button className={styles.addBtn} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
+                        <button className={`${styles.addBtn} ${isSelectionMode ? styles.hide : ""}`} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
                     </div>
 
                     <div className={styles.filterContainer}>
@@ -176,7 +186,7 @@ export default function AdminPlatesPage() {
                         { isSelectionMode ? (
                             <>
                                 <div><b>Delete many selection active, click on the plates you wish to delete</b></div>
-                                <button className={styles.deleteConfirmBtn}>Confirm</button>
+                                <button className={styles.deleteConfirmBtn} onClick={handleOpenDeleteManyPopup}>Confirm</button>
                                 <button className={styles.deleteCancelBtn} onClick={cancelDeleteMany}>Cancel</button>
                             </>
                         ) : (
@@ -188,8 +198,8 @@ export default function AdminPlatesPage() {
                         {
                             sortedPlates.map((plate) => (
                                 <div key={plate._id} className={styles.cardContainer}>
-                                    <div onClick={isSelectionMode ? () => handlePlateSelected(plate) : () => {setPlateSelected(plate)}} className={`${styles.plateCardDiv} ${selectedPlatesList.some(plateItem => plateItem._id === plate._id) ? styles.deleteSelected : null}`}>
-                                        <PlateCard plateData={plate} isSelected={selectedPlatesList.some(plateItem => plateItem._id === plate._id) ? true : false}/>
+                                    <div onClick={isSelectionMode ? () => handlePlateSelected(plate) : () => {setPlateSelected(plate)}} className={`${styles.plateCardDiv} ${platesToDeleteList.some(plateItem => plateItem._id === plate._id) ? styles.deleteSelected : null}`}>
+                                        <PlateCard plateData={plate} isSelected={platesToDeleteList.some(plateItem => plateItem._id === plate._id) ? true : false}/>
                                     </div>
                                     <div className={`${styles.platesBtnsContainer} ${isSelectionMode ? styles.hide : ""}`}>
                                         <button className={styles.editBtn} onClick={() => {
@@ -209,11 +219,13 @@ export default function AdminPlatesPage() {
 
             <AddPlatePopup open={addPlatePopupOpen} onClose={handleAddPlateOpen}></AddPlatePopup>
 
-            {plateToDelete && (<ConfirmDeletePlatePopup onClose={handleDeletePlatePopupClose} onDeleteError={handleDeleteError} onDeleted={handlePlateDeleted} plate={plateToDelete}></ConfirmDeletePlatePopup>)}
+            {plateToDelete && (<ConfirmDeletePlatePopup onClose={() => setPlateToDelete(null)} onDeleteError={handleDeleteError} onDeleted={handlePlateDeleted} plate={plateToDelete}></ConfirmDeletePlatePopup>)}
 
             {plateToUpdate && (<UpdatePlatePopup onClose={() => {setPlateToUpdate(null)}} onUpdateError={handleUpdateError} onUpdated={handlePlateUpdated} plate={plateToUpdate}></UpdatePlatePopup>)}
             
             {plateSelected && (<AdminPlatePopup onClose={() => {setPlateSelected(null)}} plateData={plateSelected}></AdminPlatePopup>)}
+
+            {deleteManyPopupOpen && (<ConfirmDeleteManyPopup onClose={() => setDeleteManyPopupOpen(false)} platesToDelete={platesToDeleteList}></ConfirmDeleteManyPopup>)}
 
             <ToastMessage visible={toast.visible} onHide={hideToast} message={toast.message} type={toast.type}></ToastMessage>
         </>
