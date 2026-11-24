@@ -27,6 +27,8 @@ export default class PlatesDataAccess {
         .collection(collectionName)
         .insertOne(plateData)
 
+        console.log("Resultado do MongoDB:", result);
+
         return result
     }
 
@@ -40,6 +42,18 @@ export default class PlatesDataAccess {
         const result = await Mongo.db
         .collection(collectionName)
         .findOneAndDelete({ _id: new ObjectId(plateId) })
+
+        return result
+    }
+
+    async deleteManyPlates(platesIdsList) {
+        const result = await Mongo.db
+            .collection(collectionName)
+            .deleteMany({
+                _id: {
+                    $in: platesIdsList.map(id => new ObjectId(id))
+                }
+            })
 
         return result
     }
