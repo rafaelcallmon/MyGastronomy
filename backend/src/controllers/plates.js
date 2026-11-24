@@ -57,6 +57,16 @@ export default class PlatesControllers {
         }
     }
 
+    async deleteManyPlates(plateIdsList) {
+        try {
+            const result = await this.dataAccess.deleteManyPlates(plateIdsList)
+
+            return ok(result)
+        } catch (error) {
+            return serverError(error)
+        }
+    }
+
     async updatePlate(plateId, plateData) {
         try {
             const result = await this.dataAccess.updatePlate(plateId, plateData)

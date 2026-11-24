@@ -46,6 +46,18 @@ export default class PlatesDataAccess {
         return result
     }
 
+    async deleteManyPlates(platesIdsList) {
+        const result = await Mongo.db
+            .collection(collectionName)
+            .deleteMany({
+                _id: {
+                    $in: platesIdsList.map(id => new ObjectId(id))
+                }
+            })
+
+        return result
+    }
+
     async updatePlate(plateId, plateData) {
         const result = await Mongo.db
             .collection(collectionName)

@@ -4,10 +4,13 @@ import { Dialog } from "@mui/material"
 import platesServices from "../../services/plates"
 import { LuChevronDown, LuChevronUp} from "react-icons/lu";
 
-export default function ConfirmDeleteManyPopup ({onClose, platesToDelete}) {
+export default function ConfirmDeleteManyPopup ({onClose, platesToDelete, onConfirm}) {
     const [isExpanded, setIsExpanded] = useState(false)
-    const { deletePlate } = platesServices()
-    const authData = JSON.parse(localStorage.getItem('auth'))
+    const platesIds = platesToDelete.map(plate => plate._id)
+
+    const handleConfirm = () => {
+        onConfirm(platesIds)
+    }
 
     return (
         <Dialog open={true} onClose={onClose}>
@@ -27,7 +30,7 @@ export default function ConfirmDeleteManyPopup ({onClose, platesToDelete}) {
                 </div>)}
 
                 <div className={styles.btnsDiv}>
-                    <button>Confirm Deletion</button>
+                    <button onClick={handleConfirm}>Confirm Deletion</button>
                     <button onClick={onClose} className={styles.cancelBtn}>Cancel</button>
                 </div>
             </div>

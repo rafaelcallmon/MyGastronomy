@@ -36,7 +36,7 @@ ordersRouter.delete('/:id', authMiddleware, async (req, res) => {
 })
 
 // Atualizar pedido
-ordersRouter.put('/:id', authMiddleware, async (req, res) => {
+ordersRouter.put('/edit/:id', authMiddleware, async (req, res) => {
     const { success, statusCode, body } = await ordersControllers.updateOrder(req.params.id, req.body)
 
     res.status(statusCode).send({ success, statusCode, body })

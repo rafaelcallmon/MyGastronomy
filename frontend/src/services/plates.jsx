@@ -135,5 +135,29 @@ export default function platesServices() {
         })
     }
 
-    return { getAvailablePlates, getAllPlates, addPlate, updatePlate, deletePlate, platesLoading, refetchPlates, platesList }
+    const deleteManyPlates = async (plateIdsList, token) => {
+        return await fetch(`${url}/delete/delete-many`, {
+            method:'DELETE',
+            body: JSON.stringify(plateIdsList),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        .then(response => response.json())
+        .then((result) => {
+            console.log(result)
+            return result
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error
+        })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
+    }
+
+    return { getAvailablePlates, getAllPlates, addPlate, updatePlate, deletePlate, deleteManyPlates, platesLoading, refetchPlates, platesList }
 }

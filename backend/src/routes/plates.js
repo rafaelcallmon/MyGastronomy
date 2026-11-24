@@ -41,6 +41,14 @@ platesRouter.delete('/:id', authMiddleware, adminMiddleware, async (req, res) =>
     res.status(statusCode).send({ success, statusCode, body })
 })
 
+// Deletar vários pratos
+platesRouter.delete('/delete/delete-many', authMiddleware, adminMiddleware, async (req, res) => {    
+    const { success, statusCode, body } = await platesControllers.deleteManyPlates(req.body)
+
+    res.status(statusCode).send({ success, statusCode, body })
+})
+
+
 // Atualizar dados do pratos
 platesRouter.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     const { success, statusCode, body } = await platesControllers.updatePlate(req.params.id, req.body)

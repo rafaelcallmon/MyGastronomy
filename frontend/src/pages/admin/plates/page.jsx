@@ -13,7 +13,7 @@ import AdminPlatePopup from "../../../components/adminPlatePopup/adminPlatePopup
 import ConfirmDeleteManyPopup from "../../../components/confirmDeleteManyPopup/confirmDeleteManyPopup.jsx";
 
 export default function AdminPlatesPage() {
-    const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates } = platesServices()
+    const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates, deleteManyPlates } = platesServices()
     const [ isSelectionMode, setIsSelectionMode ] = useState(false)
     const [ platesToDeleteList, setPlatesToDeleteList ] = useState([])
     const [ addPlatePopupOpen, setAddPlatePopupOpen ] = useState(false)
@@ -146,7 +146,33 @@ export default function AdminPlatesPage() {
         )
     }
 
-    console.log(platesToDeleteList);
+    const handleDeleteManyConfirm = async (platesIdsList) => {
+        try {
+            const result = await deleteManyPlates(platesIdsList, authData?.token)
+            console.log(result);
+
+            if (result.success) {
+                setToast({
+                    visible: true,
+                    message: `${result.body.deletedCount} pratos deletados com sucesso!`,
+                    type: "success"
+                })
+
+                setDeleteManyPopupOpen(false)
+                setPlatesToDeleteList([])
+                setIsSelectionMode(false)
+            } else {
+                throw new Error("Erro ao deletar pratos")
+            }
+        } catch (error) {
+            
+           setToast({
+                visible: true,
+                message: error.message || `Erro ao deletar pratos`,
+                type: "error"
+            }) 
+        }
+    }
     
 
     return (
@@ -225,7 +251,7 @@ export default function AdminPlatesPage() {
             
             {plateSelected && (<AdminPlatePopup onClose={() => {setPlateSelected(null)}} plateData={plateSelected}></AdminPlatePopup>)}
 
-            {deleteManyPopupOpen && (<ConfirmDeleteManyPopup onClose={() => setDeleteManyPopupOpen(false)} platesToDelete={platesToDeleteList}></ConfirmDeleteManyPopup>)}
+            {deleteManyPopupOpen && (<ConfirmDeleteManyPopup onClose={() => setDeleteManyPopupOpen(false)} onConfirm={handleDeleteManyConfirm} platesToDelete={platesToDeleteList}></ConfirmDeleteManyPopup>)}
 
             <ToastMessage visible={toast.visible} onHide={hideToast} message={toast.message} type={toast.type}></ToastMessage>
         </>
