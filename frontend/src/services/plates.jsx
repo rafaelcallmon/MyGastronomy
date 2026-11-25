@@ -7,10 +7,10 @@ export default function platesServices() {
     
     const url = 'http://localhost:3000/plates'
 
-    const getAvailablePlates = (token) => {
+    const getAvailablePlates = async (token) => {
         setPlatesLoading(true)
 
-        fetch(`${url}/availables`, {
+        await fetch(`${url}/availables`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,10 +36,10 @@ export default function platesServices() {
 
     }
 
-    const getAllPlates = (token) => {
+    const getAllPlates = async (token) => {
         setPlatesLoading(true)
 
-        fetch(`${url}`, {
+        await fetch(`${url}`, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -63,5 +63,101 @@ export default function platesServices() {
         })
     }
 
-    return { getAvailablePlates, getAllPlates, platesLoading, refetchPlates, platesList }
+    const addPlate = async (plateData, token) => {
+
+        return await fetch(`${url}`, {
+            method: 'POST',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(plateData)
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+            return result
+        })
+        .catch((error) => {
+            console.log(error)
+            throw error
+            
+        })
+    }
+
+    const updatePlate = async (plateId, plateData, token) => {
+
+        return await fetch(`${url}/${plateId}`, {
+            method:"PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(plateData)
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+            return result
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error
+        })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
+
+    }
+
+    const deletePlate = async (plateId, token) => {
+        return await fetch(`${url}/${plateId}`, {
+            method:"DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result);
+            return result
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error
+        })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
+    }
+
+    const deleteManyPlates = async (plateIdsList, token) => {
+        return await fetch(`${url}/delete/delete-many`, {
+            method:'DELETE',
+            body: JSON.stringify(plateIdsList),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        .then(response => response.json())
+        .then((result) => {
+            console.log(result)
+            return result
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error
+        })
+        .finally(() => {
+            setPlatesLoading(true)
+            setRefetchPlates(true)
+        })
+    }
+
+    return { getAvailablePlates, getAllPlates, addPlate, updatePlate, deletePlate, deleteManyPlates, platesLoading, refetchPlates, platesList }
 }

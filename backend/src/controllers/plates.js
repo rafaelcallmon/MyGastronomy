@@ -26,6 +26,17 @@ export default class PlatesControllers {
         }
     }
 
+    async addPlate(plateData) {
+        try {
+            const result = await this.dataAccess.addPlate(plateData)
+
+
+            return ok(result)
+        } catch (error) {
+            return serverError(error)
+        }
+    }
+
     async addMultiplePlates(plateDataList) {
         try {
             const result = await this.dataAccess.addMultiplePlates(plateDataList)
@@ -39,6 +50,16 @@ export default class PlatesControllers {
     async deletePlate(plateId) {
         try {
             const result = await this.dataAccess.deletePlate(plateId)
+
+            return ok(result)
+        } catch (error) {
+            return serverError(error)
+        }
+    }
+
+    async deleteManyPlates(plateIdsList) {
+        try {
+            const result = await this.dataAccess.deleteManyPlates(plateIdsList)
 
             return ok(result)
         } catch (error) {

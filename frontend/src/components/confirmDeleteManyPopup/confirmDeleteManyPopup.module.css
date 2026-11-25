@@ -1,0 +1,27 @@
+.popupContainer {
+    background-color: #faf0ca;
+    color: #004643;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    padding: 1em;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.expandDiv {
+    display: flex;
+    gap: 0.1em;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnsDiv {
+    display: flex;
+    gap: 0.2em;
+}
+
+.cancelBtn {
+    background-color: rgb(214, 50, 50);
+}

@@ -1,0 +1,118 @@
+.pageContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.pageContent {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.platesContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
+    row-gap: 30px;
+    margin-bottom: 40px;
+}
+
+.searchBar {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.searchInput {
+    border: none;
+    border-radius: 5px;
+    height: 25px;
+    width: 40%;
+    padding: 10px;
+}
+
+button {
+    height: 45px;
+}
+
+.filterContainer {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.filter select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #004643;
+    height: 40px;
+}
+
+.filter label {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.platesBtnsContainer {
+    display: flex;
+    gap: 0.2em;
+}
+
+.deleteBtn, .deleteManyBtn, .deleteCancelBtn {
+    background-color: rgb(155, 57, 57);
+}
+
+.selectionBtnsContainer {
+    display: flex;
+    gap: 0.4em;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.selectionBtnsContainer div {
+    font-size: medium;
+    position: sticky;
+    z-index: 999;
+}
+
+.hide {
+    display: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .platesContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .platesContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .pageContainer {
+        text-align: center;
+    }
+}

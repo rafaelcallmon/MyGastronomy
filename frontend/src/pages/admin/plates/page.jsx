@@ -1,0 +1,259 @@
+import { useEffect, useState } from "react";
+import platesServices from "../../../services/plates";
+import styles from "./page.module.css"
+import Loading from "../../loading/page.jsx"
+import { LuPlus, LuSquarePen, LuTrash } from "react-icons/lu";
+import { Navigate } from "react-router-dom";
+import PlateCard from "../../../components/plateCard/plateCard.jsx"
+import AddPlatePopup from "../../../components/addPlatePopup/addPlatePopup.jsx";
+import ConfirmDeletePlatePopup from "../../../components/confirmDeletePlatePopup/confirmDeletePlatePopup.jsx";
+import ToastMessage from "../../../components/toastMessage/toastMessage.jsx";
+import UpdatePlatePopup from "../../../components/updatePlatePopup/updatePlatePopup.jsx";
+import AdminPlatePopup from "../../../components/adminPlatePopup/adminPlatePopup.jsx";
+import ConfirmDeleteManyPopup from "../../../components/confirmDeleteManyPopup/confirmDeleteManyPopup.jsx";
+
+export default function AdminPlatesPage() {
+    const { getAvailablePlates, platesList, getAllPlates, addPlate, refetchPlates, deleteManyPlates } = platesServices()
+    const [ isSelectionMode, setIsSelectionMode ] = useState(false)
+    const [ platesToDeleteList, setPlatesToDeleteList ] = useState([])
+    const [ addPlatePopupOpen, setAddPlatePopupOpen ] = useState(false)
+    const [ deleteManyPopupOpen, setDeleteManyPopupOpen ] = useState(false)
+    const [ plateSelected, setPlateSelected ] = useState(null)
+    const [ plateToDelete, setPlateToDelete ] = useState(null)
+    const [ plateToUpdate, setPlateToUpdate ] = useState(null)
+    const [ selectedSort, setSelectedSort ] = useState("any")
+    const [ showAvailable, setShowAvailable ] = useState("all")
+    const [ nameToSearch, setNameToSearch ] = useState('')
+    const [toast, setToast] = useState({
+            visible: false,
+            message: "",
+            type: 'success'
+    })
+    const authData = JSON.parse(localStorage.getItem('auth'))
+
+    useEffect(() => {
+        if (refetchPlates) {
+            getAllPlates(authData?.token)
+        }
+    }, [refetchPlates])
+
+    if (!authData) {
+        return <Navigate to="/auth" replace />;
+    }
+
+    if (!platesList) {
+        return ( <Loading></Loading> )
+    }
+
+    const filteredPlates = platesList.filter(plate => {
+        const checkName = plate.name.toLowerCase().includes(nameToSearch.toLowerCase())
+
+        const checkAvailable = showAvailable === "all"? true : showAvailable === "true" ? plate.available : !plate.available
+
+        return checkName && checkAvailable
+    })
+
+    const sortedPlates = [...filteredPlates].sort((a, b) => {
+        if (selectedSort === "highestPrice") {
+            return b.price - a.price
+        } else if (selectedSort === "lowestPrice") {
+            return a.price - b.price
+        }
+    })
+
+    const hideToast = () => {
+        setToast((prev) => ({
+            ...prev,
+            visible: false,
+        }))
+    }
+
+    const handleAddPlateOpen = (e) => {
+        e.preventDefault()
+
+        setAddPlatePopupOpen(!addPlatePopupOpen)
+        getAllPlates(authData?.token)
+    }
+
+    const handleDeletePlateOpen = (e) => {
+        e.preventDefault()
+
+        getAllPlates(authData?.token)
+    }
+
+    const handlePlateDeleted = (plateName) => {
+        getAllPlates(authData?.token)
+        setPlateToDelete(null)
+
+        setToast({
+            visible: true,
+            message: `Prato "${plateName}" excluído com sucesso`,
+            type: "success"
+        });
+    }
+
+    const handleDeleteError = (message) => {
+        setToast({
+            visible: true,
+            message: message || "Could not delete plate",
+            type: "error"
+        });
+    };
+    
+
+    const handlePlateUpdated = (plateName) => {
+        getAllPlates(authData?.token)
+
+        setPlateToUpdate(null)
+        setToast({
+            visible:true,
+            message: `Prato "${plateName}" atualizado com sucesso`,
+            type: "success"
+        })
+    }
+
+    const handleUpdateError = (message) => {
+        setToast({
+            visible: true,
+            message: message,
+            type: "error"
+        })
+    }
+
+    const cancelDeleteMany = () => {
+        setIsSelectionMode(false)
+        setPlatesToDeleteList([])
+    }
+
+    const handleOpenDeleteManyPopup = () => {
+        if (platesToDeleteList.length > 0) {
+            setDeleteManyPopupOpen(true)
+        } else {
+            setToast({
+                visible: true,
+                message: "No plate selected",
+                type: "error"
+            })
+        }
+    }
+
+    const handlePlateSelected = (plate) => {
+        if (platesToDeleteList.some(plateItem => plateItem._id === plate._id)) {
+            const newList = platesToDeleteList.filter(plateItem => plateItem._id !== plate._id)
+            setPlatesToDeleteList(newList)
+        } else (
+            setPlatesToDeleteList([...platesToDeleteList, plate])
+        )
+    }
+
+    const handleDeleteManyConfirm = async (platesIdsList) => {
+        try {
+            const result = await deleteManyPlates(platesIdsList, authData?.token)
+            console.log(result);
+
+            if (result.success) {
+                setToast({
+                    visible: true,
+                    message: `${result.body.deletedCount} pratos deletados com sucesso!`,
+                    type: "success"
+                })
+
+                setDeleteManyPopupOpen(false)
+                setPlatesToDeleteList([])
+                setIsSelectionMode(false)
+            } else {
+                throw new Error("Erro ao deletar pratos")
+            }
+        } catch (error) {
+            
+           setToast({
+                visible: true,
+                message: error.message || `Erro ao deletar pratos`,
+                type: "error"
+            }) 
+        }
+    }
+    
+
+    return (
+        <>
+            <div className={styles.pageContainer}>
+                <h1>Plates Panel</h1>
+
+                <div className={styles.pageContent}>
+                    <div className={styles.searchBar}>
+                        <input className={styles.searchInput} type="text" name="" value={nameToSearch} onChange={(e) => {setNameToSearch(e.target.value); console.log(nameToSearch);
+                        }} id="" placeholder="Search plate by name"/>
+                        <button className={`${styles.addBtn} ${isSelectionMode ? styles.hide : ""}`} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
+                    </div>
+
+                    <div className={styles.filterContainer}>
+                        <div className={styles.filter}>
+                            <label htmlFor="">Sort by: </label>
+                            <select name="selectedSort" id="selectedSort" value={selectedSort} onChange={(e) => {setSelectedSort(e.target.value)
+                            }}>
+                                <option value="any">Any</option>
+                                <option value="highestPrice">Highet Price</option>
+                                <option value="lowestPrice">Lowest Price</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <label htmlFor="">Available: </label>
+                            <select name="showAvailable" id="showAvailable" value={showAvailable} onChange={(e) => {setShowAvailable(e.target.value); console.log(showAvailable);}}>
+                                <option value="all">All</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className={styles.selectionBtnsContainer}>
+                        { isSelectionMode ? (
+                            <>
+                                <div><b>Delete many selection active, click on the plates you wish to delete</b></div>
+                                <button className={styles.deleteConfirmBtn} onClick={handleOpenDeleteManyPopup}>Confirm</button>
+                                <button className={styles.deleteCancelBtn} onClick={cancelDeleteMany}>Cancel</button>
+                            </>
+                        ) : (
+                            <button className={styles.deleteManyBtn} onClick={() => setIsSelectionMode(true)}><LuTrash/>Delete Many</button>
+                        ) }
+                    </div>
+
+                    <div className={styles.platesContainer}>
+                        {
+                            sortedPlates.map((plate) => (
+                                <div key={plate._id} className={styles.cardContainer}>
+                                    <div onClick={isSelectionMode ? () => handlePlateSelected(plate) : () => {setPlateSelected(plate)}} className={`${styles.plateCardDiv} ${platesToDeleteList.some(plateItem => plateItem._id === plate._id) ? styles.deleteSelected : null}`}>
+                                        <PlateCard plateData={plate} isSelected={platesToDeleteList.some(plateItem => plateItem._id === plate._id) ? true : false}/>
+                                    </div>
+                                    <div className={`${styles.platesBtnsContainer} ${isSelectionMode ? styles.hide : ""}`}>
+                                        <button className={styles.editBtn} onClick={() => {
+                                            setPlateToUpdate(plate)
+                                        }}><LuSquarePen/>Edit</button>
+                                        <button className={styles.deleteBtn} onClick={() => {
+                                            setPlateToDelete(plate)
+                                            handleDeletePlateOpen()
+                                        }}><LuTrash/>Delete</button>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <AddPlatePopup open={addPlatePopupOpen} onClose={handleAddPlateOpen}></AddPlatePopup>
+
+            {plateToDelete && (<ConfirmDeletePlatePopup onClose={() => setPlateToDelete(null)} onDeleteError={handleDeleteError} onDeleted={handlePlateDeleted} plate={plateToDelete}></ConfirmDeletePlatePopup>)}
+
+            {plateToUpdate && (<UpdatePlatePopup onClose={() => {setPlateToUpdate(null)}} onUpdateError={handleUpdateError} onUpdated={handlePlateUpdated} plate={plateToUpdate}></UpdatePlatePopup>)}
+            
+            {plateSelected && (<AdminPlatePopup onClose={() => {setPlateSelected(null)}} plateData={plateSelected}></AdminPlatePopup>)}
+
+            {deleteManyPopupOpen && (<ConfirmDeleteManyPopup onClose={() => setDeleteManyPopupOpen(false)} onConfirm={handleDeleteManyConfirm} platesToDelete={platesToDeleteList}></ConfirmDeleteManyPopup>)}
+
+            <ToastMessage visible={toast.visible} onHide={hideToast} message={toast.message} type={toast.type}></ToastMessage>
+        </>
+    )
+}

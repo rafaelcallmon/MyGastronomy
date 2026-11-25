@@ -1,0 +1,27 @@
+.container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.success {
+    background-color: rgb(81, 180, 93);
+}
+
+.error {
+    background-color: rgb(195, 26, 26);
+}
+
+.message {
+    color: #ffffff;
+    text-align: center;
+  }
