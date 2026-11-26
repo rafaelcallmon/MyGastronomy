@@ -8,6 +8,7 @@ import AdminOrdersPage from "../pages/admin/orders/page.jsx"
 import PrivateRoute from "./privateRoute";
 import PrivateAdminRoute from "./privateAdminRoute.jsx";
 import AdminPlatesPage from "../pages/admin/plates/page.jsx";
+import AdminHomePage from "../pages/admin/home/page.jsx";
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
             </Route>
 
             <Route element={<PrivateAdminRoute/>}>
+                <Route path="/admin" element={<AdminHomePage/>}></Route>
                 <Route path="/admin/orders" element={<AdminOrdersPage/>}></Route>
                 <Route path="/admin/plates" element={<AdminPlatesPage/>}></Route>
             </Route>

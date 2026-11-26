@@ -8,7 +8,8 @@
 }
 
 .selected {
-    border: solid 0.3em red
+    outline: 6px solid rgb(240, 37, 37);
+    outline-offset: 3px;
 }
 
 .cardContainer {

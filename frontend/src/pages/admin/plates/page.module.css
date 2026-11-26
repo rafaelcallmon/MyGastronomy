@@ -42,14 +42,19 @@ button {
 .filterContainer {
     display: flex;
     gap: 1em;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
+}
+
+.optionsContainer {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .filter {
     display: flex;
-    flex-direction: row;
     gap: 0.5em;
+    align-items: center;
 }
 
 .filter select {
@@ -90,12 +95,16 @@ button {
     gap: 0.4em;
     justify-content: flex-end;
     align-items: center;
+    align-self: flex-end;
 }
 
-.selectionBtnsContainer div {
-    font-size: medium;
-    position: sticky;
-    z-index: 999;
+.deleteManyBtn {
+    width: 20%;
+}
+
+.selectionMsg {
+    font-size: large;
+    align-self: center;
 }
 
 .hide {

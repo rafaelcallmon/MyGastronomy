@@ -53,13 +53,16 @@ export default function Profile() {
         setSelectedDate("")
         setValueToSearch('')
     }
+
+    console.log(ordersList);
+    
     
     const filteredOrders = ordersList.filter((order) => {
         const searchValue = valueToSearch.toLowerCase().trim()
 
         const checkStatus = selectedStatus === "All" ? true : order.pickUpStatus === selectedStatus
 
-        const checkValueToSearch = order.orderItems.some(item => item.itemDetails[0].name.toLowerCase().includes(searchValue))
+        const checkValueToSearch = order.orderItems.some(item => item.name.toLowerCase().includes(searchValue))
 
         const orderDate = getOrderDate(order)
 

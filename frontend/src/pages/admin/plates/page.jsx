@@ -187,38 +187,46 @@ export default function AdminPlatesPage() {
                         <button className={`${styles.addBtn} ${isSelectionMode ? styles.hide : ""}`} onClick={handleAddPlateOpen}><LuPlus/>Add Plate</button>
                     </div>
 
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <label htmlFor="">Sort by: </label>
-                            <select name="selectedSort" id="selectedSort" value={selectedSort} onChange={(e) => {setSelectedSort(e.target.value)
-                            }}>
-                                <option value="any">Any</option>
-                                <option value="highestPrice">Highet Price</option>
-                                <option value="lowestPrice">Lowest Price</option>
-                            </select>
+                    <div className={styles.optionsContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <label htmlFor="">Sort by: </label>
+                                <select name="selectedSort" id="selectedSort" value={selectedSort} onChange={(e) => {setSelectedSort(e.target.value)
+                                }}>
+                                    <option value="any">Any</option>
+                                    <option value="highestPrice">Highet Price</option>
+                                    <option value="lowestPrice">Lowest Price</option>
+                                </select>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <label htmlFor="">Available: </label>
+                                <select name="showAvailable" id="showAvailable" value={showAvailable} onChange={(e) => {setShowAvailable(e.target.value); console.log(showAvailable);}}>
+                                    <option value="all">All</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <label htmlFor="">Available: </label>
-                            <select name="showAvailable" id="showAvailable" value={showAvailable} onChange={(e) => {setShowAvailable(e.target.value); console.log(showAvailable);}}>
-                                <option value="all">All</option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className={styles.selectionBtnsContainer}>
                         { isSelectionMode ? (
-                            <>
-                                <div><b>Delete many selection active, click on the plates you wish to delete</b></div>
+                            <div className={styles.selectionBtnsContainer}>
                                 <button className={styles.deleteConfirmBtn} onClick={handleOpenDeleteManyPopup}>Confirm</button>
                                 <button className={styles.deleteCancelBtn} onClick={cancelDeleteMany}>Cancel</button>
-                            </>
+                            </div>
                         ) : (
                             <button className={styles.deleteManyBtn} onClick={() => setIsSelectionMode(true)}><LuTrash/>Delete Many</button>
                         ) }
                     </div>
+
+                    
+                    { isSelectionMode ? (
+                            <div className={styles.selectionMsg}>
+                                <b>Delete many selection active, click on the plates you wish to delete</b>
+                            </div>
+                        ) : (
+                            null
+                        ) }
 
                     <div className={styles.platesContainer}>
                         {
