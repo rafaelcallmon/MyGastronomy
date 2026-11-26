@@ -1,0 +1,71 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.searchInput {
+    border: none;
+    border-radius: 5px;
+    height: 25px;
+    width: 40%;
+    padding: 10px;
+}
+
+.searchBar {
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    justify-content: center;
+}
+
+.filterContainer {
+    align-self: flex-start;
+    display: flex;
+    gap: 1em;
+    margin-left: 35px;
+}
+
+.filter {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.filter label {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    color: #004643;
+    height: 40px;
+}
+
+.usersContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 0.5em;
+}
+
+@media screen and (max-width: 1200px) {
+    .usersContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .usersContainer {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

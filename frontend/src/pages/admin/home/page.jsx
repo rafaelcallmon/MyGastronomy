@@ -14,7 +14,7 @@ export default function AdminHomePage() {
                 <div className={styles.linksContainer}>
                     <Link to={"/admin/plates"}><button className={styles.linkBtn}><FaBowlFood/>Plates Panel</button></Link>
                     <Link to={"/admin/orders"}><button className={styles.linkBtn}><BiFoodMenu/>Orders Panel</button></Link>
-                    <button className={styles.linkBtn}><LuUser/>Users panel</button>
+                    <Link to={"/admin/users"}><button className={styles.linkBtn}><LuUser/>Users panel</button></Link>
                     <button className={styles.linkBtn}>Enigma</button>
                 </div>
             </div>

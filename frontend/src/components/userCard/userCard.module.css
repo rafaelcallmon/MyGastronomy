@@ -1,0 +1,21 @@
+.cardContainer {
+    background-color: #004643;
+    color: #faf0ca;
+    padding: 1em;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    break-inside: avoid;
+    margin-bottom: 0.5em;
+    position: relative;
+}
+
+.btn {
+    background-color: rgb(39, 39, 152);
+    align-self: flex-end;
+}
+
+.title {
+    text-align: center;
+}
