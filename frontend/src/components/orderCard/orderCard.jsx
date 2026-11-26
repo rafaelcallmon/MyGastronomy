@@ -32,7 +32,7 @@ export default function OrderCard ({ order, onCancel }) {
                     <div className={styles.orderItemsContainer}>
                         {order.orderItems.map((item) => (
                             <div key={item._id} className={styles.orderCardItem}>
-                                <div>{item.itemDetails[0].name}</div>
+                                <div>{item.name}</div>
                                 <div>Price: $ {item.price.toFixed(2)}</div>
                                 <div>Quantity: {item.quantity}</div>
                                 <div>Subtotal: $ {item.subtotal.toFixed(2)}</div>

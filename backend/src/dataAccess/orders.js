@@ -29,27 +29,6 @@ export default class OrdersDataAccess {
                     'userDetails.password': 0,
                     'userDetails.salt': 0
                 }
-            },
-            {
-                $unwind: '$orderItems'
-            },
-            {
-                $lookup: {
-                    from: 'plates',
-                    localField: 'orderItems.plateId',
-                    foreignField: '_id',
-                    as: 'orderItems.itemDetails'
-                }
-            },
-            {
-                $group: {
-                    _id: '$_id',
-                    pickUpStatus: { $first: '$pickUpStatus'},
-                    pickupTime: { $first: '$pickupTime'},
-                    userDetails: { $first: '$userDetails'},
-                    total: { $first: '$total'},
-                    orderItems: { $push: '$orderItems'}
-                }
             }
         ])
         .toArray()
@@ -85,27 +64,6 @@ export default class OrdersDataAccess {
                     'userDetails.password': 0,
                     'userDetails.salt': 0
                 }
-            },
-            {
-                $unwind: '$orderItems'
-            },
-            {
-                $lookup: {
-                    from: 'plates',
-                    localField: 'orderItems.plateId',
-                    foreignField: '_id',
-                    as: 'orderItems.itemDetails'
-                }
-            },
-            {
-                $group: {
-                    _id: '$_id',
-                    pickUpStatus: { $first: '$pickUpStatus'},
-                    pickupTime: { $first: '$pickupTime'},
-                    userDetails: { $first: '$userDetails'},
-                    total: { $first: '$total'},
-                    orderItems: { $push: '$orderItems'}
-                }
             }
         ])
         .toArray()
@@ -114,6 +72,8 @@ export default class OrdersDataAccess {
     }
 
     async addOrder(orderData) {
+        console.log(orderData);
+        
         const { items, ...orderDataRest } = orderData
 
         await Promise.all(
@@ -126,7 +86,12 @@ export default class OrdersDataAccess {
                     throw new Error(`Plate with id: ${item.plateId} cannot be found`)
                 }
 
+                item.name = plate.name
                 item.price = plate.price
+                item.description = plate.description
+                item.ingredients = plate.ingredients
+                item.category = plate.category
+                item.imgUrl = plate.imgUrl
                 item.subtotal = plate.price * item.quantity
             })
         )
@@ -151,7 +116,6 @@ export default class OrdersDataAccess {
         }
 
         items.map((item => {
-            item.plateId = new ObjectId(item.plateId)
             item.orderId = new ObjectId(newOrder.insertedId)
         }))
 
