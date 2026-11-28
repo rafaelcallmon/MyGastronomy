@@ -14,6 +14,12 @@ usersRouter.get('/', authMiddleware, adminMiddleware, async (req, res) => {
     res.status(statusCode).send({ success, statusCode, body })
 })
 
+usersRouter.get('/:id', authMiddleware, adminMiddleware, async (req, res) => {
+    const { success, statusCode, body } = await usersControllers.getUserById(req.params.id)
+
+    res.status(statusCode).send({ success, statusCode, body })
+})
+
 // Deletar usuário
 usersRouter.delete('/:id', authMiddleware, async (req, res) => {
     const { success, statusCode, body } = await usersControllers.deleteUser(req.params.id)

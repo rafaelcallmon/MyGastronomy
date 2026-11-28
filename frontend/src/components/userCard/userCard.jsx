@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./userCard.module.css"
 import { LuUser, LuSearch } from "react-icons/lu";
 
@@ -10,7 +11,9 @@ export default function ({user}) {
             <div>Email: {user.email}</div>
             <div>Role: {user.role}</div>
             
-            <button className={styles.btn}><LuSearch/>View details</button>
+            <Link to={`/admin/users/view/${user._id}`} className={styles.btn}>
+                <button className={styles.btn}><LuSearch/>View details</button>
+            </Link>
         </div>
     )
 }

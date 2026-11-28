@@ -14,6 +14,14 @@ export default class UsersDataAccess {
         return result
     }
 
+    async getUserById(userId) {
+        const result = await Mongo.db
+        .collection(collectionName)
+        .findOne({_id: new ObjectId(userId)})
+
+        return result
+    }
+
     async deleteUser(userId) {
         const result = await Mongo.db
         .collection(collectionName)

@@ -6,20 +6,18 @@ import UserCard from "../../../components/userCard/userCard.jsx"
 
 export default function AdminUsersPage() {
     const [searchValue, setSearchValue] = useState("")
-    const { getAllUsers, refetchUsers, usersLoading, usersList } = usersServices()
     const authData = JSON.parse(localStorage.getItem('auth'))
+    const { getAllUsers, getUserById, refetchUsers, usersLoading, usersList } = usersServices(authData?.token)
 
     useEffect(() => {
         if (refetchUsers) {
-            getAllUsers(authData?.token)
+            getAllUsers()
         }
     }, [refetchUsers])
 
     if (usersLoading) {
         return <Loading></Loading>
     }
-    
-    console.log(usersList);
     
 
     return (

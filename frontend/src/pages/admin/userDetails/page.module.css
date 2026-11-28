@@ -1,0 +1,60 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.userBadge {
+    background-color: #004643;
+    color: #faf0ca;
+    padding: 20px;
+    font-size: 40px;
+    border-radius: 5px;
+    height: 70px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.pageContent {
+    align-self: flex-start;
+    width: 100%;
+}
+
+.optionsContainer {
+    display: flex;
+    gap: 0;
+}
+
+.optionsContainer button {
+    background: none;
+    color: #004643;
+    border-radius: 20px;
+    height: 10px;
+}
+
+.optionsContainer button:hover {
+    background-color: #dfd7b9;
+}
+
+.optionsContainer button.selected {
+    background-color: #dfd7b9;
+}
+
+hr {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background-color: #004643;
+  height: 2px;
+}
+
+.menuContent {
+}
